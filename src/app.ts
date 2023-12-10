@@ -13,7 +13,12 @@ import * as THREE from 'three';
 
 // Initialize core ThreeJS components
 const scene = new SeedScene();
-const camera = new PerspectiveCamera();
+const camera = new PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    10000
+);
 const renderer = new WebGLRenderer({
     antialias: true,
     alpha: true,

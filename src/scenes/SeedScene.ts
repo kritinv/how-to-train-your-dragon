@@ -5,6 +5,7 @@ import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
 import Balloon from '../objects/Balloon/Balloon';
 import Island from '../objects/Floating Island/Island';
+import Cloud from '../objects/Clouds/Clouds';
 
 // Define an object type which describes each object in the update list
 type UpdateChild = {
@@ -18,6 +19,7 @@ class SeedScene extends Scene {
         gui: dat.GUI;
         rotationSpeed: number;
         updateList: UpdateChild[];
+        start_time: number;
     };
 
     constructor() {
@@ -29,6 +31,7 @@ class SeedScene extends Scene {
             gui: new Dat.GUI(), // Create GUI for scene
             rotationSpeed: 0,
             updateList: [],
+            start_time: Date.now(),
         };
 
         // Add lights to scene
@@ -38,33 +41,24 @@ class SeedScene extends Scene {
         const toothless = new Toothless();
         toothless.position.set(0, -3, 0);
         const balloon = new Balloon();
-        balloon.position.set(
-            0,
-            - 10,
-            500
-        );
+        balloon.position.set(0, -10, 500);
         const balloonScale = 0.0006;
         balloon.scale.copy(
             new Vector3(balloonScale, balloonScale, balloonScale)
         );
-        
+
         // Add floating island to the scene
         const island = new Island();
         const islandScale = 0.5;
-        island.scale.copy(
-            new Vector3(islandScale, islandScale, islandScale)
-        );
-        island.position.set(
-            1,
-            1,
-            1000
-        );
+        island.scale.copy(new Vector3(islandScale, islandScale, islandScale));
+        island.position.set(1, 1, 1000);
         this.addToUpdateList(island);
         this.addToUpdateList(balloon);
+        island.scale.copy(new Vector3(islandScale, islandScale, islandScale));
+        island.position.set(0, toothless.position.y, toothless.position.z + 30);
         // Add objects to scenecloud1
-        this.add(lights, toothless, sky, island);
-        this.fog = new Fog( 0xa8928e, 300, 500 ); 
-
+        this.add(lights, toothless, sky, island, Cloud);
+        this.fog = new Fog(0xa8928e, 300, 500);
     }
 
     addToUpdateList(object: UpdateChild): void {
@@ -72,6 +66,10 @@ class SeedScene extends Scene {
     }
 
     update(timeStamp: number): void {
+        // Update clouds
+        let position = ((Date.now() - this.state.start_time) * 0.03) % 8000;
+        Cloud.position.z = -position + 8000;
+
         const { rotationSpeed, updateList } = this.state;
         //this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 

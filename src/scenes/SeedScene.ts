@@ -4,6 +4,7 @@ import sky from '../scenes/Sky';
 import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
 import Balloon from '../objects/Balloon/Balloon';
+import Island from '../objects/Floating Island/Island';
 
 // Define an object type which describes each object in the update list
 type UpdateChild = {
@@ -46,9 +47,20 @@ class SeedScene extends Scene {
         balloon.scale.copy(
             new Vector3(balloonScale, balloonScale, balloonScale)
         );
-
+        
+        // Add floating island to the scene
+        const island = new Island();
+        const islandScale = 0.5;
+        island.scale.copy(
+            new Vector3(islandScale, islandScale, islandScale)
+        );
+        island.position.set(
+            0,
+            toothless.position.y,
+            toothless.position.z + 30
+        );
         // Add objects to scenecloud1
-        this.add(lights, toothless, balloon, sky);
+        this.add(lights, toothless,  sky, island);
     }
 
     addToUpdateList(object: UpdateChild): void {

@@ -22,6 +22,7 @@ class SeedScene extends Scene {
         start_time: number;
     };
 
+
     constructor() {
         // Call parent Scene() constructor
         super();
@@ -39,7 +40,7 @@ class SeedScene extends Scene {
 
         // Add toothless and balloon to scene
         const toothless = new Toothless();
-        toothless.position.set(0, -3, 0);
+        toothless.position.set(0, -3, 3);
         const balloon = new Balloon();
         balloon.position.set(0, -10, 500);
         const balloonScale = 0.0006;
@@ -59,6 +60,56 @@ class SeedScene extends Scene {
         // Add objects to scenecloud1
         this.add(lights, toothless, sky, island, Cloud);
         this.fog = new Fog(0xa8928e, 300, 500);
+        this.addToUpdateList(toothless);
+
+        this.setupKeyHandlers(toothless);
+    }
+
+    setupKeyHandlers(object: Toothless) {
+        let keyDownTime: number | null = null;
+        const quickPressThreshold = 200; // milliseconds
+
+        window.addEventListener('keydown', (event) => {
+            if (event.repeat) return; // ignore repeated keydown events
+
+            if (event.key === 'ArrowLeft') {
+                keyDownTime = Date.now();
+            }
+
+            if (event.key === 'ArrowRight') {
+                keyDownTime = Date.now();
+            }
+            // ... other keys
+        });
+
+        window.addEventListener('keyup', (event) => {
+            if (event.key === 'ArrowLeft' && keyDownTime != null) {
+                const keyPressDuration = Date.now() - keyDownTime;
+                keyDownTime = null;
+
+                if (keyPressDuration < quickPressThreshold) {
+                    console.log("moveleft");
+                    object.moveLeft();
+                } else {
+                    console.log("doubleMoveLeft");
+                    object.doubleMoveLeft(); // Call the method for longer press
+                }
+            }
+
+            if (event.key === 'ArrowRight' && keyDownTime != null) {
+                const keyPressDuration = Date.now() - keyDownTime;
+                keyDownTime = null;
+
+                if (keyPressDuration < quickPressThreshold) {
+                    console.log("moveleft");
+                    object.moveRight();
+                } else {
+                    console.log("doubleMoveLeft");
+                    object.doubleMoveRight(); // Call the method for longer press
+                }
+            }
+            // ... handling for other keys and stopping movement
+        });
     }
 
     addToUpdateList(object: UpdateChild): void {

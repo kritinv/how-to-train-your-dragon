@@ -40,8 +40,8 @@ class SeedScene extends Scene {
         const balloon = new Balloon();
         balloon.position.set(
             0,
-            toothless.position.y - 10,
-            toothless.position.z + 30
+            - 10,
+            500
         );
         const balloonScale = 0.0006;
         balloon.scale.copy(
@@ -55,12 +55,16 @@ class SeedScene extends Scene {
             new Vector3(islandScale, islandScale, islandScale)
         );
         island.position.set(
-            0,
-            toothless.position.y,
-            toothless.position.z + 30
+            1,
+            1,
+            1000
         );
+        this.addToUpdateList(island);
+        this.addToUpdateList(balloon);
         // Add objects to scenecloud1
-        this.add(lights, toothless,  sky, island);
+        this.add(lights, toothless, sky, island);
+        this.fog = new Fog( 0xa8928e, 300, 500 ); 
+
     }
 
     addToUpdateList(object: UpdateChild): void {
@@ -69,7 +73,7 @@ class SeedScene extends Scene {
 
     update(timeStamp: number): void {
         const { rotationSpeed, updateList } = this.state;
-        this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+        //this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
         // Call update for each object in the updateList
         for (const obj of updateList) {

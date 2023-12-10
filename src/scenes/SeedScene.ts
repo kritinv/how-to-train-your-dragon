@@ -1,9 +1,13 @@
 import dat from 'dat.gui';
-import { Scene, Color } from 'three';
+import { Scene, Color, Vector2, Vector3 } from 'three';
 
 import Flower from '../objects/Flower';
 import Land from '../objects/Land';
+// import Character from '../objects/Character';
 import BasicLights from '../lights/BasicLights';
+// import Tree from '../lights/TreeGoBrr';
+import Box from '../objects/TreeNew';
+import Balloon from '../objects/HotAirBalloon';
 
 // Define an object type which describes each object in the update list
 type UpdateChild = {
@@ -37,7 +41,16 @@ class SeedScene extends Scene {
         const land = new Land();
         const flower = new Flower(this);
         const lights = new BasicLights();
-        this.add(land, flower, lights);
+        // const tree = new Tree();
+        // const character = new Character();
+        const box = new Box();  //https://github.com/KhronosGroup/glTF-Sample-Models/blob/master/2.0/Box/glTF/Box.gltf 
+        const balloon = new Balloon();
+        box.position.set(flower.position.x, flower.position.y, flower.position.z);
+        balloon.position.set(flower.position.x, flower.position.y-10, flower.position.z + 10);
+        const balloonScale = 0.0006;
+        balloon.scale.copy(new Vector3(balloonScale, balloonScale, balloonScale));
+
+        this.add(lights, box, balloon);
 
         // Populate GUI
         this.state.gui.add(this.state, 'rotationSpeed', -5, 5);

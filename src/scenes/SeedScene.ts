@@ -34,7 +34,7 @@ class SeedScene extends Scene {
         this.state = {
             updateList: [],
             start_time: Date.now(),
-            lanes: [24, 12, 0, 12, 24],
+            lanes: [-24, -12, 0, 12, 24],
             lastIslandTime: 0,
             islandSpawnInterval: 3000,
             objectsToRemove: [],
@@ -136,6 +136,7 @@ class SeedScene extends Scene {
     }
 
     update(timeStamp: number): void {
+        console.log('hi');
         // Update clouds
         let time_elapsed = Date.now() - this.state.start_time;
         Cloud.position.z = (-(time_elapsed * 0.03) % 8000) + 8000;

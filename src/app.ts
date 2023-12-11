@@ -151,3 +151,5 @@ const windowResizeHandler = () => {
 };
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
+
+export default Collisions;

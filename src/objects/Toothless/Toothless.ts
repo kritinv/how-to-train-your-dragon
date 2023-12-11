@@ -1,5 +1,6 @@
-import { DetachedBindMode, Group, Vector3 } from 'three';
+import { AnimationAction, AnimationClip, AnimationMixer, DetachedBindMode, Group, LoopOnce, LoopRepeat, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 // add action queue and 
 enum ToothlessActions {
     Idle = 'idle',
@@ -14,14 +15,14 @@ enum ToothlessActions {
 }
 
 enum Speed {
-    RotationMove = 0.002,
+    RotationMove = 0.007,
     RotationDoubleMove = 0.013,
     Move = 0.04,
     DoubleMove = 0.052,
 }
 
 // Import land model as a URL using Vite's syntax
-import MODEL from './Toothless.gltf?url';
+import MODEL2 from './toothless-animated/night_fury.fbx?url';
 
 class Toothless extends Group {
     
@@ -41,18 +42,40 @@ class Toothless extends Group {
 
     LaneMiddle = [-24, -12, 0, 12, 24];
 
+    mixer: AnimationMixer;
+    animationCLips: { [key: string]: AnimationClip } = {};
+    currentAnimation: AnimationClip | null = null;
+
     constructor() {
         // Call parent Group() constructor
         super();
 
-        const loader = new GLTFLoader();
-
         this.name = 'box';
 
-        loader.load(MODEL, (gltf) => {
-            this.add(gltf.scene);
-        });
-        // this.scale.set(0.7, 0.7, 0.7);
+        const fbxLoader = new FBXLoader()
+        fbxLoader.load( 
+            MODEL2,
+            (object) => {    
+                                    
+                this.add(object);
+
+                // Rotate the model by 90 degrees around the Y axis
+                object.rotation.y = Math.PI / 2; // 90 degrees
+
+                // Initialize the animation mixer
+                this.mixer = new AnimationMixer(object);
+
+                object.animations.forEach((clip) => {
+                    this.animationCLips[clip.name] = clip; // Store AnimationClip
+                    console.log("animation: " + clip.name);
+                });
+            },
+        );
+        // this.rotateOnAxis(new Vector3(0, 1, 0), 1);
+        this.currentAnimation = this.animationCLips[0];
+        this.scale.set(0.026, 0.026, 0.026);
+        this.playAnimation('toothless_armature|toothless_armature|toothless_armature|flying', 0.5);
+
 
         this.state = {
             speed: 0.03,
@@ -121,6 +144,23 @@ class Toothless extends Group {
         // this.state.rotation.x = 0;
     }
 
+    playAnimation(name: string, duration: number) {
+        // Retrieve the AnimationClip
+        const clip = this.animationCLips[name];
+        if (clip) {
+            // Get or create the action for this clip
+            const newAction = this.mixer.clipAction(clip);
+
+            if (this.currentAnimation && this.mixer.clipAction(this.currentAnimation) !== newAction) {
+                // Use crossFadeTo on the current AnimationAction
+                this.mixer.clipAction(this.currentAnimation).crossFadeTo(newAction, duration, true);
+            }
+
+            newAction.play();
+            this.currentAnimation = clip; // Update the current animation
+        }
+    }
+
     update(timeStamp: number) {
         let deltaTime = timeStamp - this.Time;
         this.Time = timeStamp;
@@ -177,12 +217,27 @@ class Toothless extends Group {
         }
 
         // Apply rotation
-        if (this.rotation.z < 0.4 && this.rotation.z > -0.4 || this.state.action == ToothlessActions.MovingLeftDouble || this.state.action == ToothlessActions.MovingRightDouble){
+        if (this.rotation.z < 1 && this.rotation.z > -1 || this.state.action == ToothlessActions.MovingLeftDouble || this.state.action == ToothlessActions.MovingRightDouble){
             if (this.state.rotation.lengthSq() > 0) {
                 this.rotateOnWorldAxis(new Vector3(1, 0, 0), this.state.rotation.x * this.state.rotationSpeed * deltaTime); // Rotate along X-axis
                 this.rotateOnWorldAxis(new Vector3(0, 1, 0), this.state.rotation.y * this.state.rotationSpeed * deltaTime); // Rotate along Y-axis
                 this.rotateOnWorldAxis(new Vector3(0, 0, 1), this.state.rotation.z * this.state.rotationSpeed * deltaTime); // Rotate along Z-axis
             }
+        }
+
+        // Update the mixer
+        if (this.mixer) {
+            this.mixer.update(deltaTime * 0.001); // Convert to seconds
+        }
+
+
+        // Play the animation 
+        const animationDuration = 1; // Duration for crossfade
+        if (this.state.action === ToothlessActions.MovingLeft) {
+            this.playAnimation('toothless_armature|toothless_armature|toothless_armature|Action', animationDuration);
+            // this.playAnimation('toothless_armature|flying', animationDuration);
+        } else if (this.state.action === ToothlessActions.Idle) {
+            this.playAnimation('toothless_armature|toothless_armature|toothless_armature|Action', animationDuration);
         }
     }
 }

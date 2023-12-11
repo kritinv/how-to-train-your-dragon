@@ -7,6 +7,7 @@ import Balloon from '../objects/Balloon/Balloon';
 import Island from '../objects/Floating Island/Island';
 import Cloud from '../objects/Clouds/Clouds';
 import Heart from '../objects/Heart/Heart';
+import Collisions from '../app';
 
 // Define an object type which describes each object in the update list
 type UpdateChild = Group & {
@@ -17,6 +18,7 @@ type UpdateChild = Group & {
 
 class SeedScene extends Scene {
     // Define the type of the state field
+    character:Toothless;
     state: {
         updateList: UpdateChild[];
         objectsToRemove: UpdateChild[];
@@ -27,6 +29,7 @@ class SeedScene extends Scene {
     };
 
     constructor() {
+        console.log("loading scene");
         // Call parent Scene() constructor
         super();
 
@@ -45,6 +48,7 @@ class SeedScene extends Scene {
 
         // Add toothless scene
         const toothless = new Toothless();
+        this.character = toothless;
         toothless.position.set(0, -3, 3);
         const balloon = new Balloon();
         balloon.position.set(0, -10, 10);
@@ -102,10 +106,10 @@ class SeedScene extends Scene {
                 keyDownTime = null;
 
                 if (keyPressDuration < quickPressThreshold) {
-                    console.log('moveleft');
+                    console.log('moveRight');
                     object.moveRight();
                 } else {
-                    console.log('doubleMoveLeft');
+                    console.log('doubleMoveRight');
                     object.doubleMoveRight(); // Call the method for longer press
                 }
             }
@@ -164,6 +168,31 @@ class SeedScene extends Scene {
             this.spawnIsland(500, timeStamp);
         }
     }
+
+    queueMoveLeft() {
+        this.character.moveLeft();
+    }
+    queueDoubleMoveLeft() {
+        this.character.doubleMoveLeft();
+    }
+    queueMoveRight() {
+        this.character.moveRight();
+    }
+    queueDoubleMoveRight() {
+        this.character.doubleMoveRight();
+    }
+    queueMoveUp() {
+        this.character.moveUp();
+    }
+    queueMoveDown() {
+        this.character.moveDown();
+    }
+    getCollision() {
+        return [Collisions.Obstacle, null];
+    }// return list [collisionType, reference to collision object]
+
+    // deleteObject()
 }
+
 
 export default SeedScene;

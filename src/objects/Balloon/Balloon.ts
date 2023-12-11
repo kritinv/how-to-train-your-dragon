@@ -7,7 +7,7 @@ import MODEL from './to_the_moon_doge_hot_air_balloon/scene.gltf?url';
 class Balloon extends Group {
     state: {
         movementSpeed: number;
-        };
+    };
     Time = 0;
     constructor() {
         // Call parent Group() constructor
@@ -27,15 +27,20 @@ class Balloon extends Group {
     update(timeStamp: number): void {
         const { movementSpeed } = this.state;
         let deltaTime = timeStamp - this.Time;
-        this.Time = timeStamp
+        this.Time = timeStamp;
         let scale = 1;
-        if(this.position.z>500){
-            scale = scale*1.5
-            this.position.z = this.position.z+(-movementSpeed * deltaTime*scale) / 10000;
-
-        }else{
-        this.position.z = this.position.z+(-movementSpeed * deltaTime) / 10000;
+        if (this.position.z > 500) {
+            scale = scale * 1.5;
+            this.position.z =
+                this.position.z + (-movementSpeed * deltaTime * scale) / 10000;
+        } else {
+            this.position.z =
+                this.position.z + (-movementSpeed * deltaTime) / 10000;
         }
+    }
+
+    outOfFrame(): boolean {
+        return this.position.z < -5;
     }
 }
 

@@ -72,9 +72,6 @@ for (let i = 0; i < 8000; i++) {
 
     const clonedPlaneGeo = planeGeo.clone();
     clonedPlaneGeo.applyMatrix4(planeObj.matrix);
-
-    console.log(clonedPlaneGeo);
-
     geometries.push(clonedPlaneGeo);
 }
 

@@ -1,27 +1,30 @@
 import * as Dat from 'dat.gui';
-import { Scene, Vector3, Fog, Mesh } from 'three';
+import { Scene, Vector3, Fog, Group, Box3, Mesh } from 'three';
 import sky from '../scenes/Sky';
 import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
 import Balloon from '../objects/Balloon/Balloon';
 import Island from '../objects/Floating Island/Island';
 import Cloud from '../objects/Clouds/Clouds';
+import Heart from '../objects/Heart/Heart';
 
 // Define an object type which describes each object in the update list
-type UpdateChild = {
+type UpdateChild = Group & {
     // Each object *might* contain an update function
     update?: (timeStamp: number) => void;
+    outOfFrame?: () => Boolean;
 };
 
 class SeedScene extends Scene {
     // Define the type of the state field
     state: {
-        gui: dat.GUI;
-        rotationSpeed: number;
         updateList: UpdateChild[];
+        objectsToRemove: UpdateChild[];
         start_time: number;
+        lanes: number[];
+        lastIslandTime: number;
+        islandSpawnInterval: number;
     };
-
 
     constructor() {
         // Call parent Scene() constructor
@@ -29,36 +32,34 @@ class SeedScene extends Scene {
 
         // Init state
         this.state = {
-            gui: new Dat.GUI(), // Create GUI for scene
-            rotationSpeed: 0,
             updateList: [],
             start_time: Date.now(),
+            lanes: [24, 12, 0, 12, 24],
+            lastIslandTime: 0,
+            islandSpawnInterval: 3000,
+            objectsToRemove: [],
         };
 
         // Add lights to scene
         const lights = new BasicLights();
 
-        // Add toothless and balloon to scene
+        // Add toothless scene
         const toothless = new Toothless();
         toothless.position.set(0, -3, 3);
         const balloon = new Balloon();
-        balloon.position.set(0, -10, 500);
+        balloon.position.set(0, -10, 10);
         const balloonScale = 0.0006;
         balloon.scale.copy(
             new Vector3(balloonScale, balloonScale, balloonScale)
         );
 
-        // Add floating island to the scene
-        const island = new Island();
-        const islandScale = 0.5;
-        island.scale.copy(new Vector3(islandScale, islandScale, islandScale));
-        island.position.set(1, 1, 1000);
-        this.addToUpdateList(island);
-        this.addToUpdateList(balloon);
-        island.scale.copy(new Vector3(islandScale, islandScale, islandScale));
-        island.position.set(0, toothless.position.y, toothless.position.z + 30);
+        // Add heart to scene
+        const heart = new Heart();
+        heart.position.set(0, 0, 0);
+
         // Add objects to scenecloud1
-        this.add(lights, toothless, sky, island, Cloud);
+        this.add(toothless);
+        this.add(sky, Cloud, lights);
         this.fog = new Fog(0xa8928e, 300, 500);
         this.addToUpdateList(toothless);
 
@@ -88,10 +89,10 @@ class SeedScene extends Scene {
                 keyDownTime = null;
 
                 if (keyPressDuration < quickPressThreshold) {
-                    console.log("moveleft");
+                    console.log('moveleft');
                     object.moveLeft();
                 } else {
-                    console.log("doubleMoveLeft");
+                    console.log('doubleMoveLeft');
                     object.doubleMoveLeft(); // Call the method for longer press
                 }
             }
@@ -101,10 +102,10 @@ class SeedScene extends Scene {
                 keyDownTime = null;
 
                 if (keyPressDuration < quickPressThreshold) {
-                    console.log("moveleft");
+                    console.log('moveleft');
                     object.moveRight();
                 } else {
-                    console.log("doubleMoveLeft");
+                    console.log('doubleMoveLeft');
                     object.doubleMoveRight(); // Call the method for longer press
                 }
             }
@@ -112,23 +113,54 @@ class SeedScene extends Scene {
         });
     }
 
+    spawnIsland(zPosition: number, timeStamp: number): void {
+        const island = new Island(timeStamp);
+        const i = Math.floor(Math.random() * this.state.lanes.length);
+        island.position.set(this.state.lanes[i], 0, zPosition);
+        this.addToUpdateList(island);
+        this.add(island);
+    }
+
     addToUpdateList(object: UpdateChild): void {
         this.state.updateList.push(object);
     }
 
+    // Method to remove an object from the updateList
+    removeFromUpdateList(objectToRemove: UpdateChild): void {
+        const { updateList } = this.state;
+        const index = updateList.indexOf(objectToRemove);
+        if (index !== -1) {
+            updateList.splice(index, 1);
+        }
+        this.remove(objectToRemove);
+    }
+
     update(timeStamp: number): void {
         // Update clouds
-        let position = ((Date.now() - this.state.start_time) * 0.03) % 8000;
-        Cloud.position.z = -position + 8000;
-
-        const { rotationSpeed, updateList } = this.state;
-        //this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+        let time_elapsed = Date.now() - this.state.start_time;
+        Cloud.position.z = (-(time_elapsed * 0.03) % 8000) + 8000;
 
         // Call update for each object in the updateList
+        const { updateList } = this.state;
         for (const obj of updateList) {
             if (obj.update !== undefined) {
                 obj.update(timeStamp);
             }
+
+            // Check if the object is out of frame
+            if (obj.outOfFrame !== undefined) {
+                if (obj.outOfFrame()) {
+                    this.removeFromUpdateList(obj);
+                }
+            }
+        }
+
+        if (
+            time_elapsed >=
+            this.state.islandSpawnInterval + this.state.lastIslandTime
+        ) {
+            this.state.lastIslandTime = time_elapsed;
+            this.spawnIsland(500, timeStamp);
         }
     }
 }

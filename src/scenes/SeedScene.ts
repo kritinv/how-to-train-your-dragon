@@ -143,7 +143,7 @@ class SeedScene extends Scene {
         console.log('hi');
         // Update clouds
         let time_elapsed = Date.now() - this.state.start_time;
-        Cloud.position.z = (-(time_elapsed * 0.03) % 8000) + 8000;
+        Cloud.position.z = (-(time_elapsed * 0.3) % 8000) + 8000;
 
         // Call update for each object in the updateList
         const { updateList } = this.state;

@@ -11,8 +11,8 @@ class BasicLights extends Group {
             
         const hemi = new HemisphereLight(0xffffbb, 0x080820, 2.3);
 
-        mainLight.position.set(10, 10, 10);
-        dir.position.set(0, 2, 0);
+        mainLight.position.set(10, 10, 100);
+        dir.position.set(0, 2, 40);
         dir.target.position.set(0, -3, 0);
 
         this.add(ambi, hemi, dir, mainLight);

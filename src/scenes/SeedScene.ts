@@ -77,13 +77,7 @@ class SeedScene extends Scene {
         window.addEventListener('keydown', (event) => {
             if (event.repeat) return; // ignore repeated keydown events
 
-            if (event.key === 'ArrowLeft') {
-                keyDownTime = Date.now();
-            }
-
-            if (event.key === 'ArrowRight') {
-                keyDownTime = Date.now();
-            }
+            keyDownTime = Date.now();
             // ... other keys
         });
 
@@ -112,6 +106,12 @@ class SeedScene extends Scene {
                     console.log('doubleMoveRight');
                     object.doubleMoveRight(); // Call the method for longer press
                 }
+            }
+
+            if (event.key === 'ArrowDown') {
+                keyDownTime = null;
+                console.log('spinmove');
+                object.spinMove();
             }
             // ... handling for other keys and stopping movement
         });

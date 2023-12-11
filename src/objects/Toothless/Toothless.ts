@@ -12,13 +12,19 @@ enum ToothlessActions {
     MovingRightDouble = 'moving right double',
     MovingUpDouble = 'moving up double',
     MovingDownDouble = 'moving down double',
+    SpinMove = 'spin move'
 }
 
 enum Speed {
     RotationMove = 0.007,
     RotationDoubleMove = 0.013,
+    RotationSpinMove = 0.02,
     Move = 0.04,
     DoubleMove = 0.052,
+}
+
+enum Duration {
+    SpinMove = 600
 }
 
 // Import land model as a URL using Vite's syntax
@@ -35,6 +41,10 @@ class Toothless extends Group {
         previousLane: number; // for movement
         action: ToothlessActions; // for animation
     };
+
+    timer : {
+        spinMove: number;
+    }
     
     Lane = [-30, -18, -6, 6, 18, 30];
 
@@ -86,6 +96,10 @@ class Toothless extends Group {
             previousLane: 3,
             action: ToothlessActions.Idle
         };
+
+        this.timer = {
+            spinMove : 0
+        }
     }
     
     currentLane() {
@@ -99,37 +113,51 @@ class Toothless extends Group {
     }
 
     moveLeft() {
-        if (this.currentLane() < 5) {
+        if (this.currentLane() < 5 && this.state.action === ToothlessActions.Idle) {
             this.state.action = ToothlessActions.MovingLeft;
             this.state.targetLane = this.currentLane() + 1;
         }
     }
 
     doubleMoveLeft() {
-        if (this.currentLane() < 4) {
-            this.state.action = ToothlessActions.MovingLeftDouble;
-            this.state.targetLane = this.currentLane() + 2;
+        if (this.state.action === ToothlessActions.Idle){
+            if (this.currentLane() < 4) {
+                this.state.action = ToothlessActions.MovingLeftDouble;
+                this.state.targetLane = this.currentLane() + 2;
+            } else {
+                this.moveLeft();
+            }
         }
     }
 
     moveRight() {
-        if (this.currentLane() > 1) {
+        if (this.currentLane() > 1 && this.state.action === ToothlessActions.Idle) {
             this.state.action = ToothlessActions.MovingRight;
             this.state.targetLane = this.currentLane() - 1;
         }
     }
 
     doubleMoveRight() {
-        if (this.currentLane() > 2) {
-            this.state.action = ToothlessActions.MovingRightDouble;
-            this.state.targetLane = this.currentLane() - 2;
-        }
+        if (this.state.action === ToothlessActions.Idle){
+            if (this.currentLane() > 2) {
+                this.state.action = ToothlessActions.MovingRightDouble;
+                this.state.targetLane = this.currentLane() - 2;
+            } else {
+                this.moveRight();
+            }
+        } 
     }
 
     moveUp() {
     }
 
     moveDown() {
+    }
+
+    spinMove() {
+        if (this.state.action === ToothlessActions.Idle) {
+            this.state.action = ToothlessActions.SpinMove;
+        }
     }
 
     stopHorizontalMovement() {
@@ -207,7 +235,22 @@ class Toothless extends Group {
                 this.state.rotation.z = 0;
                 this.setRotationFromAxisAngle(new Vector3(0,0,0), 0);
             }
-        } else {
+        } else if (this.state.action === ToothlessActions.SpinMove){
+            if (this.timer.spinMove == 0) {
+                this.timer.spinMove = timeStamp;
+            }
+            console.log("spinning");
+            this.state.rotation.z = 1;
+            this.state.rotationSpeed = Speed.RotationSpinMove;
+            if (timeStamp - this.timer.spinMove > Duration.SpinMove){
+                console.log("end spinning");
+                this.state.rotation.z = 0;
+                this.state.rotationSpeed = 0;
+                this.state.action = ToothlessActions.Idle;
+                this.timer.spinMove = 0;
+                this.setRotationFromAxisAngle(new Vector3(0,0,0), 0);
+            }
+        }else {
             this.state.direction.x = 0
         }
 
@@ -217,7 +260,7 @@ class Toothless extends Group {
         }
 
         // Apply rotation
-        if (this.rotation.z < 1 && this.rotation.z > -1 || this.state.action == ToothlessActions.MovingLeftDouble || this.state.action == ToothlessActions.MovingRightDouble){
+        if (this.rotation.z < 1 && this.rotation.z > -1 || this.state.action == ToothlessActions.MovingLeftDouble || this.state.action == ToothlessActions.MovingRightDouble || this.state.action == ToothlessActions.SpinMove){
             if (this.state.rotation.lengthSq() > 0) {
                 this.rotateOnWorldAxis(new Vector3(1, 0, 0), this.state.rotation.x * this.state.rotationSpeed * deltaTime); // Rotate along X-axis
                 this.rotateOnWorldAxis(new Vector3(0, 1, 0), this.state.rotation.y * this.state.rotationSpeed * deltaTime); // Rotate along Y-axis

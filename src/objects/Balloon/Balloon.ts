@@ -8,6 +8,7 @@ class Balloon extends Group {
     state: {
         movementSpeed: number;
         };
+    Time = 0;
     constructor() {
         // Call parent Group() constructor
         super();
@@ -24,14 +25,16 @@ class Balloon extends Group {
         });
     }
     update(timeStamp: number): void {
-        const {movementSpeed} = this.state;
+        const { movementSpeed } = this.state;
+        let deltaTime = timeStamp - this.Time;
+        this.Time = timeStamp
         let scale = 1;
-        if(this.position.z<500){
-            scale = scale*0.15
-            this.position.z = this.position.z+(-movementSpeed * timeStamp*scale) / 10000;
+        if(this.position.z>500){
+            scale = scale*1.5
+            this.position.z = this.position.z+(-movementSpeed * deltaTime*scale) / 10000;
 
         }else{
-        this.position.z = this.position.z+(-movementSpeed * timeStamp*scale) / 10000;
+        this.position.z = this.position.z+(-movementSpeed * deltaTime) / 10000;
         }
     }
 }

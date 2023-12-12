@@ -67,28 +67,32 @@ const Collisions = {
 let healthCount = 3;
 let tornadoCharged = false;
 // NUMBER 2: game responds to player keyboard input
+
+// NUMBER 3: game updates on a regular interval
+let doublePressThreshold = 200;
 let keyDownTime: any = null;
-let quickPressThreshold = 200;
+let singlePress: any = null;
+const onAnimationMovementHandler = (timeStamp: number) => {
+    if (gameRunning) {
+        if (Date.now() - keyDownTime >= doublePressThreshold) {
+            if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(); singlePress = null;}
+            if (singlePress === 'ArrowRight') { scene.queueMoveRight(); singlePress = null;}
+        }
+    }
+    window.requestAnimationFrame(onAnimationMovementHandler);
+};
+window.requestAnimationFrame(onAnimationMovementHandler);
 document.addEventListener('keydown', function (event) {
     if (event.repeat) return;
-    keyDownTime = Date.now();
-});
-document.addEventListener('keyup', function (event) {
-    let keyPressDuration = Date.now() - keyDownTime;
-    keyDownTime = null;
     if (gameRunning) {
         if (event.key === 'ArrowLeft') {
-            if (keyPressDuration < quickPressThreshold) {
-                scene.queueMoveLeft();
-            } else {
-                scene.queueDoubleMoveLeft();
-            }
+            if (singlePress === 'ArrowLeft') {scene.queueDoubleMoveLeft(); singlePress = null;}
+            else if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = 'ArrowLeft'}
+            else {keyDownTime = Date.now(); singlePress = 'ArrowLeft'}
         } else if (event.key === 'ArrowRight') {
-            if (keyPressDuration < quickPressThreshold) {
-                scene.queueMoveRight();
-            } else {
-                scene.queueDoubleMoveRight();
-            }
+            if (singlePress === 'ArrowRight') {scene.queueDoubleMoveRight(); singlePress = null;}
+            else if (singlePress === 'ArrowLeft') {scene.queueMoveRight(); singlePress = "ArrowRight"}
+            else {keyDownTime = Date.now(); singlePress = 'ArrowRight'}
         } else if (event.key === 'ArrowUp') {
             scene.queueMoveUp();
         } else if (event.key === 'ArrowDown') {

@@ -150,7 +150,6 @@ class SeedScene extends Scene {
         this.character.moveDown();
     }
     getCollision() {
-        
         return [null, null];
     } // return list [collisionType, reference to collision object]
 

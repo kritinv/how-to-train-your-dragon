@@ -10,10 +10,7 @@ import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import SeedScene from './scenes/SeedScene';
 import * as THREE from 'three';
-
-import healthBarContent from '../ihealthbar.html';
 import startScreenContent from '../istartscreen.html';
-import iendScreenContent from '../iendscreen.html';
 
 // Initialize core ThreeJS components
 const scene = new SeedScene();
@@ -64,8 +61,13 @@ let gameStart = true;
 const Collisions = {
     Obstacle: 'obstacle'
 };
-// NUMBER 1.6: variables for toothless's state
+// NUMBER 1.6: other variables for keeping track of state
 let healthCount = 3;
+let gameStartTime: any = null;
+let gameEndTime: any = null;
+let gamePauseStart: any = null;
+let elapsedTime = 0;
+let pausedTime = 0;
 // NUMBER 2: game responds to player keyboard input
 let doublePressThreshold = 200;
 let keyDownTime: any = null;
@@ -111,59 +113,119 @@ document.addEventListener('keydown', function (event) {
             gameStart = false;
             gameRunning = true;
             htmlGameRunning();
+            // important!!! need to keep track of time
+            gameStartTime = Date.now();
         } else if (gameRunning) {
             gameRunning = false;
             gamePaused = true;
             htmlGamePaused();
+            // important!!! need to keep track of time
+            gamePauseStart = Date.now();
         } else if (gamePaused) {
             gamePaused = false;
             gameRunning = true;
             htmlGameRunning();
-        } else if (gameOver) {
-            gameOver = false;
-            gameStart = true;
-            htmlGameStart();
-        }
+            // important!!! need to keep track of time
+            pausedTime += (Date.now() - gamePauseStart);
+            gamePauseStart = null;
+        } else if (gameOver) { }
     }
     eventListenerHasLock = false;
 });
 // NUMBER 3: game updates on a regular interval
 const onAnimationUpdateHandler = (timeStamp: number) => {
+    setTimeout(function() {}, 1000000);
     if (gameRunning) {
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp);
         // game updates based on whether there was a collision
         let collision = scene.getCollision();
         let collisionType = collision[0];
-        let collisionObject = collision[1];
         if (collisionType === Collisions.Obstacle) {
-            gameRunning = false;
-            gameOver = true;
-            htmlGameOver();
+            if (healthCount == 1) {
+                gameRunning = false;
+                gameOver = true;
+                healthCount -= 1;
+                htmlGameOver();
+            } else {
+                healthCount -= 1;
+                htmlUpdateHeart();
+            }
         }
     }
+    controls.update();
     window.requestAnimationFrame(onAnimationUpdateHandler);
 };
 window.requestAnimationFrame(onAnimationUpdateHandler);
-// NUMBER 4: helper functions: update HTML based on changed game state
-function htmlGameStart() {
-    let healthBar = document.createElement('div');
-    healthBar.id = 'startScreen';
-    healthBar.innerHTML = startScreenContent;
-    document.body.appendChild(healthBar);
-}
-function htmlGameRunning() {}
-function htmlGamePaused() {}
-function htmlGameOver() {}
-// !!! END OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
-
-// Render loop
-const onAnimationFrameHandler = (timeStamp: number) => {
-    controls.update();
+// Number 3.4: Game updates score on a regular interval
+const onAnimationScoreHandler = () => {
+    setTimeout(function() {}, 10000);
+    if (gameRunning) htmlUpdateScore();
+    window.requestAnimationFrame(onAnimationScoreHandler);
+};
+window.requestAnimationFrame(onAnimationScoreHandler);
+// Number 3.5: Game renders on a regular interval
+const onAnimationFrameHandler = () => {
+    setTimeout(function() {}, 10000);
     renderer.render(scene, camera);
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
+// NUMBER 4: helper functions: update HTML based on changed game state
+function htmlGameStart() {
+    let startScreen = document.createElement('div');
+    startScreen.id = 'startScreen';
+    startScreen.innerHTML = startScreenContent;
+    document.body.appendChild(startScreen);
+    let greywash = document.getElementById('greywash');
+    greywash.style.visibility = 'visible';
+    let start = document.getElementById('start');
+    start.style.visibility = 'visible';
+    let paused = document.getElementById('paused');
+    paused.style.visibility = 'hidden';
+}
+function htmlGameRunning() {
+    let greywash = document.getElementById('greywash');
+    greywash.style.visibility = 'hidden';
+    let start = document.getElementById('start');
+    start.style.visibility = 'hidden';
+    let paused = document.getElementById('paused');
+    paused.style.visibility = 'hidden';
+    let threeheart = document.getElementById('threeheart');
+    let twoheart = document.getElementById('threeheart');
+    let oneheart = document.getElementById('threeheart');
+    if (healthCount == 3) threeheart.style.visibility = 'visible';
+    else if (healthCount == 2) twoheart.style.visibility = 'visible';
+    else if (healthCount == 1) oneheart.style.visibility = 'visible';
+}
+function htmlGamePaused() {
+    let greywash = document.getElementById('greywash');
+    greywash.style.visibility = 'visible';
+    let start = document.getElementById('start');
+    start.style.visibility = 'hidden';
+    let paused = document.getElementById('paused');
+    paused.style.visibility = 'visible';
+}
+function htmlGameOver() {
+    let threeheart = document.getElementById('threeheart');
+    let twoheart = document.getElementById('threeheart');
+    let oneheart = document.getElementById('threeheart');
+    if (healthCount == 3) threeheart.style.visibility = 'hidden';
+    else if (healthCount == 2) twoheart.style.visibility = 'hidden';
+    else if (healthCount == 1) oneheart.style.visibility = 'hidden';
+    let gameover = document.getElementById('gameover');
+    gameover.style.visibility = 'visible';
+}
+function htmlUpdateScore() {
+    let score = document.getElementById('score');
+    score.innerHTML = `Score: ${Math.floor((Date.now() - gameStartTime - pausedTime) / 1000)}`;
+}
+function htmlUpdateHeart() {
+    if (healthCount == 3) threeheart.style.visibility = 'visible';
+    else if (healthCount == 2) twoheart.style.visibility = 'visible';
+    else if (healthCount == 1) oneheart.style.visibility = 'visible';
+}
+// !!! END OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
 
 // Resize Handler
 const windowResizeHandler = () => {

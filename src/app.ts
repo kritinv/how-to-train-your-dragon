@@ -11,6 +11,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import SeedScene from './scenes/SeedScene';
 import * as THREE from 'three';
 
+import healthBarContent from '../ihealthbar.html';
+import startScreenContent from '../istartscreen.html';
+import iendScreenContent from '../iendscreen.html';
+
 // Initialize core ThreeJS components
 const scene = new SeedScene();
 const camera = new PerspectiveCamera(
@@ -49,11 +53,7 @@ controls.update();
 
 // !!! START OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
 // setup html rendering process
-let healthBar = document.createElement('div');
-healthBar.id = 'healthBar';
-healthBar.innerHTML = '<p style="font-size: 0.75rem; position: absolute; top: 50px, left: 20px; width"> this is cursed </p>';
-document.body.appendChild(healthBar);
-
+htmlGameStart();
 document.body.appendChild(canvas);
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
@@ -66,31 +66,39 @@ const Collisions = {
 };
 // NUMBER 1.6: variables for toothless's state
 let healthCount = 3;
-let tornadoCharged = false;
 // NUMBER 2: game responds to player keyboard input
 let doublePressThreshold = 200;
 let keyDownTime: any = null;
 let singlePress: any = null;
+let eventListenerHasLock = false;
+let movementHandlerHasLock = false;
 const onAnimationMovementHandler = (timeStamp: number) => {
+    while(eventListenerHasLock) {};
+    movementHandlerHasLock = true;
     if (gameRunning) {
         if (Date.now() - keyDownTime >= doublePressThreshold) {
             if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(); singlePress = null;}
-            if (singlePress === 'ArrowRight') { scene.queueMoveRight(); singlePress = null;}
+            if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = null;}
         }
     }
+    setTimeout(function() {}, 100000);
+    movementHandlerHasLock = false;
     window.requestAnimationFrame(onAnimationMovementHandler);
 };
 window.requestAnimationFrame(onAnimationMovementHandler);
 document.addEventListener('keydown', function (event) {
+    while(movementHandlerHasLock) {};
+    eventListenerHasLock = true;
     if (event.repeat) return;
     if (gameRunning) {
+        setTimeout(function() {}, 100000);
         if (event.key === 'ArrowLeft') {
             if (singlePress === 'ArrowLeft') {scene.queueDoubleMoveLeft(); singlePress = null;}
             else if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = 'ArrowLeft'}
             else {keyDownTime = Date.now(); singlePress = 'ArrowLeft'}
         } else if (event.key === 'ArrowRight') {
             if (singlePress === 'ArrowRight') {scene.queueDoubleMoveRight(); singlePress = null;}
-            else if (singlePress === 'ArrowLeft') {scene.queueMoveRight(); singlePress = "ArrowRight"}
+            else if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(); singlePress = "ArrowRight"}
             else {keyDownTime = Date.now(); singlePress = 'ArrowRight'}
         } else if (event.key === 'ArrowUp') {
             scene.queueMoveUp();
@@ -117,6 +125,7 @@ document.addEventListener('keydown', function (event) {
             htmlGameStart();
         }
     }
+    eventListenerHasLock = false;
 });
 // NUMBER 3: game updates on a regular interval
 const onAnimationUpdateHandler = (timeStamp: number) => {
@@ -137,7 +146,12 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
 };
 window.requestAnimationFrame(onAnimationUpdateHandler);
 // NUMBER 4: helper functions: update HTML based on changed game state
-function htmlGameStart() {}
+function htmlGameStart() {
+    let healthBar = document.createElement('div');
+    healthBar.id = 'healthBar';
+    healthBar.innerHTML = healthBarContent;
+    document.body.appendChild(healthBar);
+}
 function htmlGameRunning() {}
 function htmlGamePaused() {}
 function htmlGameOver() {}

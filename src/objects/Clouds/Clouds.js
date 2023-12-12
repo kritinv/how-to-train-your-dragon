@@ -83,7 +83,6 @@ function updateCloud() {
         const newPosition = cloudMesh.position.z - cloudSpeed;
         cloudMesh.position.z =
             newPosition >= 0 ? newPosition : newPosition + numClouds;
-        console.log(newPosition);
     });
 }
 

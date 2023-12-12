@@ -153,7 +153,7 @@ class SeedScene extends Scene {
     }
     getCollision() {
         return [null, null];
-    } // return list [collisionType, reference to collision object]
+    } // return list [collisionType, reference to collision object] // e.g. [Collisions.Obstacle, <reference-to-object-here>]
 
     // deleteObject()
 }

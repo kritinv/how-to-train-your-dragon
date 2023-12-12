@@ -5,7 +5,7 @@ import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
 import Balloon from '../objects/Balloon/Balloon';
 import Island from '../objects/Floating Island/Island';
-import Cloud from '../objects/Clouds/Clouds';
+import { cloud, updateCloud } from '../objects/Clouds/Clouds';
 import Heart from '../objects/Heart/Heart';
 import Obstacles from '../scenes/Obstacles';
 import Collisions from '../app';
@@ -17,11 +17,8 @@ type UpdateChild = Group & {
     outOfFrame?: () => Boolean;
 };
 
-
-
 class SeedScene extends Scene {
     // Define the type of the state field
-    character:Toothless;
     state: {
         updateList: UpdateChild[];
         objectsToRemove: UpdateChild[];
@@ -33,10 +30,9 @@ class SeedScene extends Scene {
     };
 
     constructor() {
-        console.log("loading scene");
         // Call parent Scene() constructor
         super();
-        
+
         // Init state
         this.state = {
             updateList: [],
@@ -47,16 +43,12 @@ class SeedScene extends Scene {
             objectsToRemove: [],
             obstacles: new Obstacles(),
         };
-       
 
         // Add lights to scene
         const lights = new BasicLights();
 
-
-
         // Add toothless scene
         const toothless = new Toothless();
-        this.character = toothless;
         toothless.position.set(0, -3, 3);
         const balloon = new Balloon();
         balloon.position.set(0, -10, 10);
@@ -71,32 +63,30 @@ class SeedScene extends Scene {
 
         // Add objects to scenecloud1
         this.add(toothless);
-        this.add(sky, Cloud, lights);
+        this.add(sky, cloud, lights);
         this.fog = new Fog(0xa8928e, 300, 500);
         this.addToUpdateList(toothless);
     }
 
     spawnRandom(zPosition: number, timeStamp: number): void {
-       // const island = this.state.obstacles.getRandomObstacle(timeStamp).clone();
-        const object = this.chooseRandomObject(timeStamp)
+        // const island = this.state.obstacles.getRandomObstacle(timeStamp).clone();
+        const object = this.chooseRandomObject(timeStamp);
         const i = Math.floor(Math.random() * this.state.lanes.length);
         object.position.set(this.state.lanes[i], 0, zPosition);
         this.addToUpdateList(object);
         this.add(object);
     }
 
-    chooseRandomObject(timeStamp: number){
+    chooseRandomObject(timeStamp: number) {
         const baloon = new Balloon(timeStamp);
         const island = new Island(timeStamp);
-        const randomIndex = Math.floor(Math.random() * (1000));
-        if(randomIndex>500){
+        const randomIndex = Math.floor(Math.random() * 1000);
+        if (randomIndex > 500) {
             return baloon;
         }
         console.log(island)
         return island;
-
     }
-
 
     addToUpdateList(object: UpdateChild): void {
         this.state.updateList.push(object);
@@ -115,7 +105,7 @@ class SeedScene extends Scene {
     update(timeStamp: number): void {
         // Update clouds
         let time_elapsed = Date.now() - this.state.start_time;
-        Cloud.position.z = (-(time_elapsed * 0.3) % 8000) + 8000;
+        updateCloud(time_elapsed);
 
         // Call update for each object in the updateList
         const { updateList } = this.state;
@@ -162,10 +152,9 @@ class SeedScene extends Scene {
     getCollision() {
         
         return [null, null];
-    }// return list [collisionType, reference to collision object]
+    } // return list [collisionType, reference to collision object]
 
     // deleteObject()
 }
-
 
 export default SeedScene;

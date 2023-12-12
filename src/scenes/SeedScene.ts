@@ -92,6 +92,7 @@ class SeedScene extends Scene {
         if(randomIndex>500){
             return baloon;
         }
+        console.log(island)
         return island;
 
     }
@@ -159,6 +160,7 @@ class SeedScene extends Scene {
         this.character.moveDown();
     }
     getCollision() {
+        
         return [null, null];
     }// return list [collisionType, reference to collision object]
 

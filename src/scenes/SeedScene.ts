@@ -7,6 +7,7 @@ import Balloon from '../objects/Balloon/Balloon';
 import Island from '../objects/Floating Island/Island';
 import Cloud from '../objects/Clouds/Clouds';
 import Heart from '../objects/Heart/Heart';
+import Obstacles from '../scenes/Obstacles';
 import Collisions from '../app';
 
 // Define an object type which describes each object in the update list
@@ -15,6 +16,8 @@ type UpdateChild = Group & {
     update?: (timeStamp: number) => void;
     outOfFrame?: () => Boolean;
 };
+
+
 
 class SeedScene extends Scene {
     // Define the type of the state field
@@ -26,13 +29,14 @@ class SeedScene extends Scene {
         lanes: number[];
         lastIslandTime: number;
         islandSpawnInterval: number;
+        obstacles: Obstacles;
     };
 
     constructor() {
         console.log("loading scene");
         // Call parent Scene() constructor
         super();
-
+        
         // Init state
         this.state = {
             updateList: [],
@@ -41,10 +45,14 @@ class SeedScene extends Scene {
             lastIslandTime: 0,
             islandSpawnInterval: 3000,
             objectsToRemove: [],
+            obstacles: new Obstacles(),
         };
+       
 
         // Add lights to scene
         const lights = new BasicLights();
+
+
 
         // Add toothless scene
         const toothless = new Toothless();
@@ -117,13 +125,26 @@ class SeedScene extends Scene {
         });
     }
 
-    spawnIsland(zPosition: number, timeStamp: number): void {
-        const island = new Island(timeStamp);
+    spawnRandom(zPosition: number, timeStamp: number): void {
+       // const island = this.state.obstacles.getRandomObstacle(timeStamp).clone();
+        const object = this.chooseRandomObject(timeStamp)
         const i = Math.floor(Math.random() * this.state.lanes.length);
-        island.position.set(this.state.lanes[i], 0, zPosition);
-        this.addToUpdateList(island);
-        this.add(island);
+        object.position.set(this.state.lanes[i], 0, zPosition);
+        this.addToUpdateList(object);
+        this.add(object);
     }
+
+    chooseRandomObject(timeStamp: number){
+        const baloon = new Balloon(timeStamp);
+        const island = new Island(timeStamp);
+        const randomIndex = Math.floor(Math.random() * (1000));
+        if(randomIndex>500){
+            return baloon;
+        }
+        return island;
+
+    }
+
 
     addToUpdateList(object: UpdateChild): void {
         this.state.updateList.push(object);
@@ -165,7 +186,7 @@ class SeedScene extends Scene {
             this.state.islandSpawnInterval + this.state.lastIslandTime
         ) {
             this.state.lastIslandTime = time_elapsed;
-            this.spawnIsland(500, timeStamp);
+            this.spawnRandom(500, timeStamp);
         }
     }
 

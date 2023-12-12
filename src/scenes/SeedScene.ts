@@ -140,7 +140,6 @@ class SeedScene extends Scene {
     }
 
     update(timeStamp: number): void {
-        console.log('hi');
         // Update clouds
         let time_elapsed = Date.now() - this.state.start_time;
         Cloud.position.z = (-(time_elapsed * 0.3) % 8000) + 8000;

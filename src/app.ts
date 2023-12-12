@@ -121,7 +121,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp);
         // game updates based on whether there was a collision
-        let collision = [0, 0]; // scene.getCollision();
+        let collision = scene.getCollision();
         let collisionType = collision[0];
         let collisionObject = collision[1];
         if (collisionType === Collisions.Obstacle) {

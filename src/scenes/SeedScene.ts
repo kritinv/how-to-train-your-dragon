@@ -165,6 +165,20 @@ class SeedScene extends Scene {
 
 
         }
+        for (const obj of objList) {
+            if (obj.update !== undefined) {
+                obj.update(timeStamp);
+            }
+
+            // Check if the object is out of frame
+            if (obj.outOfFrame !== undefined) {
+                if (obj.outOfFrame()) {
+                    this.removeFromUpdateList(obj);
+                }
+            }
+
+
+        }
 
         if (
             time_elapsed >=

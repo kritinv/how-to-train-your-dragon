@@ -79,7 +79,7 @@ for (let i = 0; i < numClouds; i++) {
 function updateCloud() {
     // Update each cloud's position
     cloud.children.forEach((cloudMesh) => {
-        const cloudSpeed = 5;
+        const cloudSpeed = 7;
         const newPosition = cloudMesh.position.z - cloudSpeed;
         cloudMesh.position.z =
             newPosition >= 0 ? newPosition : newPosition + numClouds;

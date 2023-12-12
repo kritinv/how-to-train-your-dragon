@@ -57,14 +57,13 @@ material.side = THREE.DoubleSide;
 
 // Creates Plane Geometry
 const planeGeo = new THREE.PlaneGeometry(64, 64);
+const cloud = new THREE.Group();
+const numClouds = 2500;
 
-const geometries = [];
-const planeObj = new THREE.Object3D();
-
-for (let i = 0; i < 8000; i++) {
+for (let i = 0; i < numClouds; i++) {
+    const planeObj = new THREE.Object3D();
     planeObj.position.x = Math.random() * 4000 - 2000;
     planeObj.position.y = -Math.random() * Math.random() * 200 - 100;
-    planeObj.position.z = -i;
     planeObj.rotation.z = Math.random() * Math.PI;
     planeObj.scale.x = planeObj.scale.y =
         Math.random() * Math.random() * 5 + 0.5;
@@ -72,12 +71,20 @@ for (let i = 0; i < 8000; i++) {
 
     const clonedPlaneGeo = planeGeo.clone();
     clonedPlaneGeo.applyMatrix4(planeObj.matrix);
-    geometries.push(clonedPlaneGeo);
+    const cloudMesh = new THREE.Mesh(clonedPlaneGeo, material);
+    cloudMesh.position.z = numClouds - i;
+    cloud.add(cloudMesh);
 }
 
-// Create Plane Object
-const planeGeos = BufferGeometryUtils.mergeGeometries(geometries);
-const cloud = new THREE.Mesh(planeGeos, material);
-cloud.position.z = 8000; // Set it to your desired negative z position
+function updateCloud() {
+    // Update each cloud's position
+    cloud.children.forEach((cloudMesh) => {
+        const cloudSpeed = 5;
+        const newPosition = cloudMesh.position.z - cloudSpeed;
+        cloudMesh.position.z =
+            newPosition >= 0 ? newPosition : newPosition + numClouds;
+        console.log(newPosition);
+    });
+}
 
-export default cloud;
+export { cloud, updateCloud };

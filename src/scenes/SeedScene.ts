@@ -9,6 +9,7 @@ import { cloud, updateCloud } from '../objects/Clouds/Clouds';
 import Heart from '../objects/Heart/Heart';
 import Obstacles from '../scenes/Obstacles';
 import Collisions from '../app';
+import { VERSION } from 'three/examples/jsm/libs/tween.module';
 
 // Define an object type which describes each object in the update list
 type UpdateChild = Group & {
@@ -22,6 +23,7 @@ class SeedScene extends Scene {
     character: Toothless
     state: {
         updateList: UpdateChild[];
+        objList: UpdateChild[];
         objectsToRemove: UpdateChild[];
         start_time: number;
         lanes: number[];
@@ -37,6 +39,7 @@ class SeedScene extends Scene {
         // Init state
         this.state = {
             updateList: [],
+            objList: [],
             start_time: Date.now(),
             lanes: [-24, -12, 0, 12, 24],
             lastIslandTime: 0,
@@ -75,7 +78,7 @@ class SeedScene extends Scene {
         const object = this.chooseRandomObject(timeStamp);
         const i = Math.floor(Math.random() * this.state.lanes.length);
         object.position.set(this.state.lanes[i], 0, zPosition);
-        this.addToUpdateList(object);
+        this.addToUpdateListObj(object);
         this.add(object);
     }
 
@@ -86,12 +89,17 @@ class SeedScene extends Scene {
         if (randomIndex > 500) {
             return baloon;
         }
-        console.log(island)
+       // console.log(island.boundingBox)
         return island;
     }
 
     addToUpdateList(object: UpdateChild): void {
         this.state.updateList.push(object);
+    }
+
+    addToUpdateListObj(object: UpdateChild): void {
+        //console.log("hello",object)
+        this.state.objList.push(object);
     }
 
     // Method to remove an object from the updateList
@@ -111,6 +119,38 @@ class SeedScene extends Scene {
 
         // Call update for each object in the updateList
         const { updateList } = this.state;
+        const { objList } = this.state
+        for (const obj of objList) {
+            if (obj.update !== undefined) {
+                obj.update(timeStamp);
+            }
+
+            if (obj.boundingBox !== undefined) {
+                const box = new Vector3().copy(obj.boundingBox.min);
+                const position = new Vector3().copy(this.character.boundingBox.min);
+            
+                const minThreshold = -20;
+                const maxThreshold = 20;
+            
+                const collisionX = box.x > position.x + minThreshold && box.x < position.x + maxThreshold;
+                const collisionY = box.y > position.y + minThreshold && box.y < position.y + maxThreshold;
+                const collisionZ = box.z > position.z + minThreshold && box.z < position.z + maxThreshold;
+            
+                if (collisionX && collisionY && collisionZ) {
+                    console.log("Collision!");
+                }
+            }
+
+            // Check if the object is out of frame
+            if (obj.outOfFrame !== undefined) {
+                if (obj.outOfFrame()) {
+                   // console.log(obj);
+                    this.removeFromUpdateList(obj);
+                }
+            }
+
+
+        }
         for (const obj of updateList) {
             if (obj.update !== undefined) {
                 obj.update(timeStamp);
@@ -122,6 +162,8 @@ class SeedScene extends Scene {
                     this.removeFromUpdateList(obj);
                 }
             }
+
+
         }
 
         if (
@@ -153,7 +195,7 @@ class SeedScene extends Scene {
     }
     getCollision() {
         return [null, null];
-    } // return list [collisionType, reference to collision object] // e.g. [Collisions.Obstacle, <reference-to-object-here>]
+    } // return list [collisionType, reference to collision object]
 
     // deleteObject()
 }

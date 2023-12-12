@@ -1,10 +1,12 @@
-import { Group, Vector3 } from 'three';
+import { Group, Vector3, Box3} from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // Import land model as a URL using Vite's syntax
 import MODEL from './to_the_moon_doge_hot_air_balloon/scene.gltf?url';
 
 class Balloon extends Group {
+    model: Group; 
+    boundingBox: Box3;
     state: {
         movementSpeed: number;
         Time: number;
@@ -25,14 +27,25 @@ class Balloon extends Group {
         const loader = new GLTFLoader();
 
         this.name = 'balloon' + timeStamp;
+        this.model = new Group();
+        this.boundingBox = new Box3();
 
-        const randomIndex = Math.floor(Math.random() * (1000));
 
-        this.rotateY(randomIndex)
+    
 
+        /*loader.load(MODEL, (gltf) => {
+           const model = gltf.scene;
+            this.add(model);
+        });*/
         loader.load(MODEL, (gltf) => {
-            this.add(gltf.scene);
+            this.model = gltf.scene;
+            this.add(this.model);
+            this.boundingBox = new Box3().setFromObject(this.model);
+
+
         });
+       // this.boundingBox = new Box3().setFromObject(this.model);
+        
     }
     outOfFrame(): boolean {
         return this.position.z < 0;
@@ -67,6 +80,8 @@ class Balloon extends Group {
         //     scale /= 10
         //      this.position.z += (-0.5 * timeStamp * scale) / 10000;
         //  }
+        this.boundingBox.setFromObject(this.model);
+
     }
 }
 

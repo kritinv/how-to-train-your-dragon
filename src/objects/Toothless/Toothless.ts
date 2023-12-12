@@ -1,4 +1,4 @@
-import { AnimationAction, AnimationClip, AnimationMixer, DetachedBindMode, Group, LoopOnce, LoopRepeat, Vector3 } from 'three';
+import { AnimationAction, AnimationClip, AnimationMixer, DetachedBindMode, Group, LoopOnce, LoopRepeat, Vector3, Box3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 // add action queue and 
@@ -31,7 +31,10 @@ enum Duration {
 import MODEL2 from './toothless-animated/night_fury.fbx?url';
 
 class Toothless extends Group {
-    
+    model: Group; 
+
+    boundingBox: Box3;
+
     state: {
         speed: number;
         direction: Vector3;
@@ -61,12 +64,16 @@ class Toothless extends Group {
         super();
 
         this.name = 'box';
+        this.model = new Group();
+        this.boundingBox = new Box3();
+
 
         const fbxLoader = new FBXLoader()
         fbxLoader.load( 
             MODEL2,
             (object) => {    
-                                    
+                this.model = object;
+         
                 this.add(object);
 
                 // Rotate the model by 90 degrees around the Y axis
@@ -79,6 +86,8 @@ class Toothless extends Group {
                     this.animationCLips[clip.name] = clip; // Store AnimationClip
                     console.log("animation: " + clip.name);
                 });
+                this.boundingBox = new Box3().setFromObject(this.model);
+
             },
         );
         // this.rotateOnAxis(new Vector3(0, 1, 0), 1);
@@ -282,6 +291,8 @@ class Toothless extends Group {
         } else if (this.state.action === ToothlessActions.Idle) {
             this.playAnimation('toothless_armature|toothless_armature|toothless_armature|Action', animationDuration);
         }
+        this.boundingBox.setFromObject(this.model);
+
     }
 }
 

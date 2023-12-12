@@ -74,55 +74,6 @@ class SeedScene extends Scene {
         this.add(sky, Cloud, lights);
         this.fog = new Fog(0xa8928e, 300, 500);
         this.addToUpdateList(toothless);
-
-        this.setupKeyHandlers(toothless);
-    }
-
-    setupKeyHandlers(object: Toothless) {
-        let keyDownTime: number | null = null;
-        const quickPressThreshold = 200; // milliseconds
-
-        window.addEventListener('keydown', (event) => {
-            if (event.repeat) return; // ignore repeated keydown events
-
-            keyDownTime = Date.now();
-            // ... other keys
-        });
-
-        window.addEventListener('keyup', (event) => {
-            if (event.key === 'ArrowLeft' && keyDownTime != null) {
-                const keyPressDuration = Date.now() - keyDownTime;
-                keyDownTime = null;
-
-                if (keyPressDuration < quickPressThreshold) {
-                    console.log('moveleft');
-                    object.moveLeft();
-                } else {
-                    console.log('doubleMoveLeft');
-                    object.doubleMoveLeft(); // Call the method for longer press
-                }
-            }
-
-            if (event.key === 'ArrowRight' && keyDownTime != null) {
-                const keyPressDuration = Date.now() - keyDownTime;
-                keyDownTime = null;
-
-                if (keyPressDuration < quickPressThreshold) {
-                    console.log('moveRight');
-                    object.moveRight();
-                } else {
-                    console.log('doubleMoveRight');
-                    object.doubleMoveRight(); // Call the method for longer press
-                }
-            }
-
-            if (event.key === 'ArrowDown') {
-                keyDownTime = null;
-                console.log('spinmove');
-                object.spinMove();
-            }
-            // ... handling for other keys and stopping movement
-        });
     }
 
     spawnRandom(zPosition: number, timeStamp: number): void {
@@ -161,7 +112,6 @@ class SeedScene extends Scene {
     }
 
     update(timeStamp: number): void {
-        console.log('hi');
         // Update clouds
         let time_elapsed = Date.now() - this.state.start_time;
         Cloud.position.z = (-(time_elapsed * 0.3) % 8000) + 8000;
@@ -209,7 +159,7 @@ class SeedScene extends Scene {
         this.character.moveDown();
     }
     getCollision() {
-        return [Collisions.Obstacle, null];
+        return [null, null];
     }// return list [collisionType, reference to collision object]
 
     // deleteObject()

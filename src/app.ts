@@ -34,7 +34,6 @@ const canvas = renderer.domElement;
 canvas.style.display = 'block'; // Removes padding below canvas
 document.body.style.margin = '0'; // Removes margin around page
 document.body.style.overflow = 'hidden'; // Fix scrolling
-document.body.appendChild(canvas);
 
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.5;
@@ -48,15 +47,25 @@ controls.maxDistance = 16;
 controls.update();
 
 // !!! START OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
+// setup html rendering process
+let healthBar = document.createElement('div');
+healthBar.id = 'healthBar';
+healthBar.innerHTML = '<p style="font-size: 0.75rem; position: absolute; top: 50px, left: 20px; width"> this is cursed </p>';
+document.body.appendChild(healthBar);
+
+document.body.appendChild(canvas);
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
 let gameRunning = false;
 let gameStart = true;
-// Number 1.5: enum for the types of collisions. import this from SeedScene.ts
+// NUMBER 1.5: enum for the types of collisions. import this from SeedScene.ts
 const Collisions = {
-    Obstacle: 'obstacle',
+    Obstacle: 'obstacle'
 };
+// NUMBER 1.6: variables for toothless's state
+let healthCount = 3;
+let tornadoCharged = false;
 // NUMBER 2: game responds to player keyboard input
 let keyDownTime: any = null;
 let quickPressThreshold = 200;
@@ -85,25 +94,24 @@ document.addEventListener('keyup', function (event) {
         } else if (event.key === 'ArrowDown') {
             scene.queueMoveDown();
         }
-    } else {
-        if (event.key === ' ') {
-            if (gameStart) {
-                gameStart = false;
-                gameRunning = true;
-                htmlGameRunning();
-            } else if (gameRunning) {
-                gameRunning = false;
-                gamePaused = true;
-                htmlGamePaused();
-            } else if (gamePaused) {
-                gamePaused = false;
-                gameRunning = true;
-                htmlGameRunning();
-            } else if (gameOver) {
-                gameOver = false;
-                gameStart = true;
-                htmlGameStart();
-            }
+    } 
+    if (event.key === ' ') {
+        if (gameStart) {
+            gameStart = false;
+            gameRunning = true;
+            htmlGameRunning();
+        } else if (gameRunning) {
+            gameRunning = false;
+            gamePaused = true;
+            htmlGamePaused();
+        } else if (gamePaused) {
+            gamePaused = false;
+            gameRunning = true;
+            htmlGameRunning();
+        } else if (gameOver) {
+            gameOver = false;
+            gameStart = true;
+            htmlGameStart();
         }
     }
 });
@@ -113,7 +121,6 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp);
         // game updates based on whether there was a collision
-        /*
         let collision = scene.getCollision();
         let collisionType = collision[0];
         let collisionObject = collision[1];
@@ -122,7 +129,6 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
             gameOver = true;
             htmlGameOver();
         }
-        */
     }
     window.requestAnimationFrame(onAnimationUpdateHandler);
 };

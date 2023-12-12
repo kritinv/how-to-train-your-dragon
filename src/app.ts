@@ -148,8 +148,8 @@ window.requestAnimationFrame(onAnimationUpdateHandler);
 // NUMBER 4: helper functions: update HTML based on changed game state
 function htmlGameStart() {
     let healthBar = document.createElement('div');
-    healthBar.id = 'healthBar';
-    healthBar.innerHTML = healthBarContent;
+    healthBar.id = 'startScreen';
+    healthBar.innerHTML = startScreenContent;
     document.body.appendChild(healthBar);
 }
 function htmlGameRunning() {}

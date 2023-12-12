@@ -44,6 +44,7 @@ controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 4;
 controls.maxDistance = 16;
+controls.enabled = false;
 controls.update();
 
 // !!! START OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
@@ -67,8 +68,6 @@ const Collisions = {
 let healthCount = 3;
 let tornadoCharged = false;
 // NUMBER 2: game responds to player keyboard input
-
-// NUMBER 3: game updates on a regular interval
 let doublePressThreshold = 200;
 let keyDownTime: any = null;
 let singlePress: any = null;

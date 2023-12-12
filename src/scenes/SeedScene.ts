@@ -19,6 +19,7 @@ type UpdateChild = Group & {
 
 class SeedScene extends Scene {
     // Define the type of the state field
+    character: Toothless
     state: {
         updateList: UpdateChild[];
         objectsToRemove: UpdateChild[];
@@ -49,6 +50,7 @@ class SeedScene extends Scene {
 
         // Add toothless scene
         const toothless = new Toothless();
+        this.character = toothless;
         toothless.position.set(0, -3, 3);
         const balloon = new Balloon();
         balloon.position.set(0, -10, 10);

@@ -1,4 +1,4 @@
-import { AnimationClip, AnimationMixer, Group, Vector3, Box3 } from 'three';
+import { AnimationClip, AnimationMixer, Group, Vector3, Box3, Mesh, Material } from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 // add action queue and 
 enum ToothlessActions {
@@ -34,7 +34,7 @@ class Toothless extends Group {
 
     boundingBox: Box3;
 
-    state: {
+    private state: {
         speed: number;
         direction: Vector3;
         rotation: Vector3;
@@ -44,19 +44,28 @@ class Toothless extends Group {
         action: ToothlessActions; // for animation
     };
 
-    timer : {
+    private blinkingState: { // Blink properties
+        isBlinking: boolean;
+        lastBlinkTimeStamp: number;
+        blinkDuration: number; // Total duration of blink effect in milliseconds
+        blinkInterval: number; // Interval of each blink in milliseconds
+        blinkOpacityLow: number; // Low opacity
+        blinkOpacityHigh: number; // High opacity
+    };
+
+    private timer : {
         spinMove: number;
     }
     
-    Lane = [-30, -18, -6, 6, 18, 30];
+    private Lane = [-30, -18, -6, 6, 18, 30]; // defines boundary of lane, eg. lane1 is between this.Lane[0] and this.Lane[1]
 
-    Time = 0;
+    private Time = 0; // for calculating delta time in update()
 
-    LaneMiddle = [-24, -12, 0, 12, 24];
+    private LaneMiddle = [-24, -12, 0, 12, 24]; // x coord of middle of lane
 
-    mixer!: AnimationMixer;
-    animationCLips: { [key: string]: AnimationClip } = {};
-    currentAnimation: AnimationClip | null = null;
+    private mixer!: AnimationMixer;
+    private animationCLips: { [key: string]: AnimationClip } = {};
+    private currentAnimation: AnimationClip | null = null;
 
 
     // Toothless Constructor
@@ -88,14 +97,26 @@ class Toothless extends Group {
                 });
                 this.boundingBox = new Box3().setFromObject(this.model);
 
+                object.traverse((child) => {
+                    if ((<THREE.Mesh> child).isMesh) {
+                        const mesh = child as Mesh;
+                        if (Array.isArray(mesh.material) && mesh.material[1] instanceof Material) {
+                            mesh.material[1].opacity = 1;
+                            mesh.material[1].transparent = true;
+                        }
+                    }
+                });     
+
             },
         );
+           
         // this.rotateOnAxis(new Vector3(0, 1, 0), 1);
         this.currentAnimation = this.animationCLips[0];
         this.scale.set(0.026, 0.026, 0.026);
         this.playAnimation('toothless_armature|toothless_armature|toothless_armature|flying', 0.5);
 
 
+        // Initialize state
         this.state = {
             speed: 0.03,
             direction: new Vector3(),
@@ -106,14 +127,26 @@ class Toothless extends Group {
             action: ToothlessActions.Idle
         };
 
+        // Initialize blink property for collision animation
+        this.blinkingState = {
+            isBlinking: false,
+            lastBlinkTimeStamp: 0,
+            blinkDuration: 1000, 
+            blinkInterval: 100, 
+            blinkOpacityLow: 0.3, 
+            blinkOpacityHigh: 1, 
+        };
+
         this.timer = {
             spinMove : 0
         }
+
     }
-    
+
+    // ---------------------------------------------------------------------------------- //
     // Helper functions
     // ---------------------------------------------------------------------------------- //
-    currentLane() {
+    private currentLane() {
         for (let i = 0; i < this.Lane.length - 1; i++) {
             if (this.position.x > this.Lane[i] && this.position.x < this.Lane[i+1]) {
                 return i + 1;
@@ -122,11 +155,14 @@ class Toothless extends Group {
         return -1;
     }
 
-    clamp(value: number, min: number, max: number): number {
+    private clamp(value: number, min: number, max: number): number {
         return Math.min(Math.max(value, min), max);
     }
     // ---------------------------------------------------------------------------------- //
 
+    // ---------------------------------------------------------------------------------- //
+    // Toothless Action Control Interface
+    // ---------------------------------------------------------------------------------- //
     moveLeft() {
         if (this.currentLane() < 5 && this.state.action === ToothlessActions.Idle) {
             this.state.action = ToothlessActions.MovingLeft;
@@ -169,6 +205,12 @@ class Toothless extends Group {
     moveDown() {
     }
 
+    collide() { // plays collide animation
+        // Start blinking on collision
+        this.blinkingState.isBlinking = true;
+        this.blinkingState.lastBlinkTimeStamp = this.Time; 
+    }
+
     spinMove() {
         if (this.state.action === ToothlessActions.Idle) {
             this.state.action = ToothlessActions.SpinMove;
@@ -186,6 +228,7 @@ class Toothless extends Group {
         // this.setRotationFromAxisAngle(new Vector3(0,0,-1), 0);
         // this.state.rotation.x = 0;
     }
+    // ---------------------------------------------------------------------------------- //
 
     playAnimation(name: string, duration: number) {
         // Retrieve the AnimationClip
@@ -289,6 +332,39 @@ class Toothless extends Group {
         // Add hard check so Toothless doesn't leave lanes
         const EPS = 0.01;
         this.position.set(this.clamp(this.position.x, this.LaneMiddle[0]-EPS, this.LaneMiddle[4]+EPS), this.position.y, this.position.z);
+
+        // Add blinking logic for collision
+        if (this.blinkingState.isBlinking) {
+            let timeSinceBlinkStart = timeStamp - this.blinkingState.lastBlinkTimeStamp;
+            if (timeSinceBlinkStart < this.blinkingState.blinkDuration) {
+                // Determine the opacity based on the current phase of the blink
+                let phase = Math.floor(timeSinceBlinkStart / this.blinkingState.blinkInterval) % 2;
+                let opacity = phase === 0 ? this.blinkingState.blinkOpacityLow : this.blinkingState.blinkOpacityHigh;       
+                // Apply opacity to the model
+                this.model.traverse((child) => {
+                    if ((<THREE.Mesh> child).isMesh) {
+                        const mesh = child as Mesh;
+                        if (Array.isArray(mesh.material) && mesh.material[1] instanceof Material) {
+                            mesh.material[1].transparent = true;
+                            mesh.material[1].opacity = opacity;
+                        }
+                    }
+                });         
+            } else {
+                // Stop blinking after the duration ends
+                this.blinkingState.isBlinking = false;
+                // Make sure model is fully transparent
+                this.model.traverse((child) => {
+                    if ((<THREE.Mesh> child).isMesh) {
+                        const mesh = child as Mesh;
+                        if (Array.isArray(mesh.material) && mesh.material[1] instanceof Material) {
+                            mesh.material[1].transparent = true;
+                            mesh.material[1].opacity = 1;
+                        }
+                    }
+                });  
+            }
+        }
 
         // Update the mixer
         if (this.mixer) {

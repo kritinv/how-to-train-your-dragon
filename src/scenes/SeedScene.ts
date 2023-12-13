@@ -86,30 +86,37 @@ class SeedScene extends Scene {
 
     queueMoveLeft(sounds: any) {
         this.character.moveLeft();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     queueDoubleMoveLeft(sounds: any) {
         this.character.doubleMoveLeft();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     queueMoveRight(sounds: any) {
         this.character.moveRight();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     queueDoubleMoveRight(sounds: any) {
         this.character.doubleMoveRight();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     queueMoveUp(sounds: any) {
         this.character.moveUp();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     queueMoveDown(sounds: any) {
         this.character.moveDown();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     queueSpinMove(sounds: any) {
         this.character.spinMove();
+        sounds['wind'].stop()
         sounds['wind'].play()
     }
     getCollision() {

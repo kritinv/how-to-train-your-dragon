@@ -97,6 +97,9 @@ class SeedScene extends Scene {
     queueMoveDown() {
         this.character.moveDown();
     }
+    queueSpinMove() {
+        this.character.spinMove();
+    }
     getCollision() {
         if (this.obstacles.state.hasCollision) {
             return ['obstacle', null];

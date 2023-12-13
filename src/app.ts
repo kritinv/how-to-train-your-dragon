@@ -103,6 +103,8 @@ document.addEventListener('keydown', function (event) {
             scene.queueMoveUp();
         } else if (event.key === 'ArrowDown') {
             scene.queueMoveDown();
+        } else if (event.key === 's') {
+            scene.queueSpinMove();
         }
     } 
     if (event.key === ' ') {

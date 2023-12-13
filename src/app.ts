@@ -83,7 +83,7 @@ const onAnimationMovementHandler = (timeStamp: number) => {
             if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = null;}
         }
     }
-    setTimeout(function() {}, 100000);
+    // setTimeout(function() {}, 100000);
     movementHandlerHasLock = false;
     window.requestAnimationFrame(onAnimationMovementHandler);
 };
@@ -93,7 +93,7 @@ document.addEventListener('keydown', function (event) {
     eventListenerHasLock = true;
     if (event.repeat) return;
     if (gameRunning) {
-        setTimeout(function() {}, 100000);
+        // setTimeout(function() {}, 100000);
         if (event.key === 'ArrowLeft') {
             if (singlePress === 'ArrowLeft') {scene.queueDoubleMoveLeft(); singlePress = null;}
             else if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = 'ArrowLeft'}
@@ -134,7 +134,7 @@ document.addEventListener('keydown', function (event) {
 });
 // NUMBER 3: game updates on a regular interval
 const onAnimationUpdateHandler = (timeStamp: number) => {
-    setTimeout(function() {}, 1000000);
+    // setTimeout(function() {}, 1000000);
     if (gameRunning) {
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp-pausedTime);
@@ -159,14 +159,14 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
 window.requestAnimationFrame(onAnimationUpdateHandler);
 // Number 3.4: Game updates score on a regular interval
 const onAnimationScoreHandler = () => {
-    setTimeout(function() {}, 10000);
+    // setTimeout(function() {}, 10000);
     if (gameRunning) htmlUpdateScore();
     window.requestAnimationFrame(onAnimationScoreHandler);
 };
 window.requestAnimationFrame(onAnimationScoreHandler);
 // Number 3.5: Game renders on a regular interval
 const onAnimationFrameHandler = () => {
-    setTimeout(function() {}, 10000);
+    // setTimeout(function() {}, 10000);
     renderer.render(scene, camera);
     window.requestAnimationFrame(onAnimationFrameHandler);
 };

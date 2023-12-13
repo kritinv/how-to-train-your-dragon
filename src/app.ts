@@ -53,15 +53,25 @@ controls.update();
 let listener = new THREE.AudioListener();
 camera.add(listener);
 let sounds: any = [];
+let audioLoader = new THREE.AudioLoader();
+// add wind sound component
 let wind = new THREE.Audio(listener);
 sounds['wind'] = wind;
-let audioLoader = new THREE.AudioLoader();
-audioLoader.load('../sounds/wind.wav', function(buffer) {
+audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/wind.wav', function(buffer) {
     wind.setBuffer(buffer);
     wind.setLoop(false);
     wind.setVolume(0.5);
 });
-console.log(sounds);
+console.log(sounds['wind']);
+// add punch sound component
+let punch = new THREE.Audio(listener);
+sounds['punch'] = wind;
+audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/punch.wav', function(buffer) {
+    wind.setBuffer(buffer);
+    wind.setLoop(false);
+    wind.setVolume(0.5);
+});
+console.log(sounds['punch']);
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
@@ -155,6 +165,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
         let collision = scene.getCollision();
         let collisionType = collision[0];
         if (collisionType === Collisions.Obstacle) {
+            sounds['punch'].play();
             if (healthCount <= 1) {
                 healthCount -= 1;
                 htmlGameOver();

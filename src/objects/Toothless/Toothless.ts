@@ -95,7 +95,7 @@ class Toothless extends Group {
                 object.animations.forEach((clip) => {
                     this.animationCLips[clip.name] = clip; // Store AnimationClip
                 });
-                this.boundingBox = new Box3().setFromObject(this.model);
+                this.boundingBox = this.boundingBox.setFromObject(this.model);
 
                 object.traverse((child) => {
                     if ((<THREE.Mesh> child).isMesh) {
@@ -114,7 +114,6 @@ class Toothless extends Group {
         this.currentAnimation = this.animationCLips[0];
         this.scale.set(0.026, 0.026, 0.026);
         this.playAnimation('toothless_armature|toothless_armature|toothless_armature|flying', 0.5);
-
 
         // Initialize state
         this.state = {
@@ -312,6 +311,7 @@ class Toothless extends Group {
         // Apply movement
         if (this.state.direction.lengthSq() > 0) {
             this.position.addScaledVector(this.state.direction.normalize(), this.state.speed * deltaTime);
+            this.boundingBox.setFromCenterAndSize(this.position.clone(), this.boundingBox.max.add(this.boundingBox.min.multiplyScalar(-1)));
         }
 
         // Apply rotation
@@ -331,7 +331,7 @@ class Toothless extends Group {
 
         // Add hard check so Toothless doesn't leave lanes
         const EPS = 0.01;
-        this.position.set(this.clamp(this.position.x, this.LaneMiddle[0]-EPS, this.LaneMiddle[4]+EPS), this.position.y, this.position.z);
+        this.position.setX(this.clamp(this.position.x, this.LaneMiddle[0]-EPS, this.LaneMiddle[4]+EPS));
 
         // Add blinking logic for collision
         if (this.blinkingState.isBlinking) {
@@ -379,8 +379,6 @@ class Toothless extends Group {
         } else if (this.state.action === ToothlessActions.Idle) {
             this.playAnimation('toothless_armature|toothless_armature|toothless_armature|Action', animationDuration);
         }
-
-        this.boundingBox.setFromObject(this.model);
     }
 }
 

@@ -75,28 +75,33 @@ class Obstacles {
             object.boundingBox.setFromObject(object.model);
 
             // collision detection
-            if (object.boundingBox !== undefined) {
-                const box = new Vector3().copy(object.boundingBox.min);
-                const position = new Vector3().copy(toothless.boundingBox.min);
+            if (object.name !== this.state.lastObjectName) {
+                if (object.boundingBox !== undefined) {
+                    const box = new Vector3().copy(object.boundingBox.min);
+                    const position = new Vector3().copy(
+                        toothless.boundingBox.min
+                    const minThreshold = -20;
+                    const maxThreshold = 20;
 
-                const minThreshold = -20;
-                const maxThreshold = 20;
+                    const collisionX =
+                        box.x > position.x + minThreshold &&
+                        box.x < position.x + maxThreshold;
+                    const collisionY =
+                        box.y > position.y + minThreshold &&
+                        box.y < position.y + maxThreshold;
+                    const collisionZ =
+                        box.z > position.z + minThreshold &&
+                        box.z < position.z + maxThreshold;
 
-                const collisionX =
-                    box.x > position.x + minThreshold &&
-                    box.x < position.x + maxThreshold;
-                const collisionY =
-                    box.y > position.y + minThreshold &&
-                    box.y < position.y + maxThreshold;
-                const collisionZ =
-                    box.z > position.z + minThreshold &&
-                    box.z < position.z + maxThreshold;
+                    if (collisionX && collisionY && collisionZ) {
+                        this.state.hasCollision = true;
+                        this.state.lastObjectName = object.name;
+                        this.state.collisionType = type;
+                    } else {
+                        this.state.hasCollision = false;
+                    }
 
-                if (collisionX && collisionY && collisionZ) {
-                    this.state.hasCollision = true;
-                    this.state.lastObjectName = object.name;
-                    this.state.collisionType = type;
-                    console.log(type);
+                    console.log(this.state.hasCollision);
                 }
             }
 

@@ -56,7 +56,8 @@ let gameRunning = false;
 let gameStart = true;
 // NUMBER 1.5: enum for the types of collisions. import this from SeedScene.ts
 const Collisions = {
-    Obstacle: 'obstacle'
+    Obstacle: 'obstacle',
+    Powerup: 'powerup'
 };
 // NUMBER 1.6: other variables for keeping track of state
 let healthCount = 3;
@@ -148,6 +149,11 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
                 gameOver = true;
             } else {
                 healthCount -= 1;
+                htmlUpdateHeart();
+            }
+        } else if (collisionType === Collisions.Powerup) {
+            if (healthCount <= 2) {
+                healthCount += 1
                 htmlUpdateHeart();
             }
         }

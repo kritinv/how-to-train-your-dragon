@@ -58,6 +58,8 @@ class Toothless extends Group {
     animationCLips: { [key: string]: AnimationClip } = {};
     currentAnimation: AnimationClip | null = null;
 
+
+    // Toothless Constructor
     constructor() {
         // Call parent Group() constructor
         super();
@@ -109,6 +111,8 @@ class Toothless extends Group {
         }
     }
     
+    // Helper functions
+    // ---------------------------------------------------------------------------------- //
     currentLane() {
         for (let i = 0; i < this.Lane.length - 1; i++) {
             if (this.position.x > this.Lane[i] && this.position.x < this.Lane[i+1]) {
@@ -117,6 +121,11 @@ class Toothless extends Group {
         }
         return -1;
     }
+
+    clamp(value: number, min: number, max: number): number {
+        return Math.min(Math.max(value, min), max);
+    }
+    // ---------------------------------------------------------------------------------- //
 
     moveLeft() {
         if (this.currentLane() < 5 && this.state.action === ToothlessActions.Idle) {
@@ -272,9 +281,13 @@ class Toothless extends Group {
         }
 
         // Overwrite rotation for smoother rotation when reaching target lane
-        if ((this.state.action == ToothlessActions.MovingLeft || this.state.action == ToothlessActions.MovingRight ) && (Math.abs(this.position.x - this.LaneMiddle[this.state.targetLane - 1]) < 3)) {
-            this.setRotationFromAxisAngle(new Vector3(0,0,1), (this.position.x - this.LaneMiddle[this.state.targetLane - 1])/3);
+        const transitionDist = 2;
+        if ((this.state.action == ToothlessActions.MovingLeft || this.state.action == ToothlessActions.MovingRight ) && (Math.abs(this.position.x - this.LaneMiddle[this.state.targetLane - 1]) < transitionDist)) {
+            this.setRotationFromAxisAngle(new Vector3(0,0,1), (this.position.x - this.LaneMiddle[this.state.targetLane - 1])/transitionDist);
         }
+
+        // Add hard check so Toothless doesn't leave lanes
+        this.position.set(this.clamp(this.position.x, this.LaneMiddle[0], this.LaneMiddle[-1]), this.position.y, this.position.z);
 
         // Update the mixer
         if (this.mixer) {

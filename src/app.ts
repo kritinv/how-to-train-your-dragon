@@ -184,6 +184,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
                 gameOver = true;
             } else {
                 healthCount -= 1;
+                scene.queueCollide();
                 htmlUpdateHeart();
             }
         } else if (collisionType === Collisions.Powerup) {

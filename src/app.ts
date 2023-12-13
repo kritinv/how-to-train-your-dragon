@@ -49,9 +49,6 @@ controls.maxDistance = 16;
 controls.update();
 
 // !!! START OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
-// setup html rendering process
-htmlGameStart();
-document.body.appendChild(canvas);
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
@@ -142,11 +139,11 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
         let collision = scene.getCollision();
         let collisionType = collision[0];
         if (collisionType === Collisions.Obstacle) {
-            if (healthCount == 1) {
-                gameRunning = false;
-                gameOver = true;
+            if (healthCount <= 1) {
                 healthCount -= 1;
                 htmlGameOver();
+                gameRunning = false;
+                gameOver = true;
             } else {
                 healthCount -= 1;
                 htmlUpdateHeart();
@@ -207,12 +204,14 @@ function htmlGamePaused() {
     paused.style.visibility = 'visible';
 }
 function htmlGameOver() {
+    console.log("im in here");
+    console.log(`${healthCount}`);
     let threeheart = document.getElementById('threeheart');
-    let twoheart = document.getElementById('threeheart');
-    let oneheart = document.getElementById('threeheart');
-    if (healthCount == 3) threeheart.style.visibility = 'hidden';
-    else if (healthCount == 2) twoheart.style.visibility = 'hidden';
-    else if (healthCount == 1) oneheart.style.visibility = 'hidden';
+    let twoheart = document.getElementById('twoheart');
+    let oneheart = document.getElementById('oneheart');
+    threeheart.style.visibility = 'hidden';
+    twoheart.style.visibility = 'hidden';
+    oneheart.style.visibility = 'hidden';
     let gameover = document.getElementById('gameover');
     gameover.style.visibility = 'visible';
 }
@@ -221,10 +220,39 @@ function htmlUpdateScore() {
     score.innerHTML = `Score: ${Math.floor((Date.now() - gameStartTime - pausedTime) / 1000)}`;
 }
 function htmlUpdateHeart() {
-    if (healthCount == 3) threeheart.style.visibility = 'visible';
-    else if (healthCount == 2) twoheart.style.visibility = 'visible';
-    else if (healthCount == 1) oneheart.style.visibility = 'visible';
+    if (healthCount == 3) { 
+        threeheart.style.visibility = 'visible';
+        twoheart.style.visibility = 'hidden';
+        oneheart.style.visibility = 'hidden';
+    }
+    else if (healthCount == 2) {
+        threeheart.style.visibility = 'hidden';
+        twoheart.style.visibility = 'visible';
+        oneheart.style.visibility = 'hidden';
+    }
+    else if (healthCount == 1) {
+        threeheart.style.visibility = 'hidden';
+        twoheart.style.visibility = 'hidden';
+        oneheart.style.visibility = 'visible'; 
+    }
+    else {
+        threeheart.style.visibility = 'hidden';
+        twoheart.style.visibility = 'hidden';
+        oneheart.style.visibility = 'hidden'; 
+    }
 }
+// setup html rendering process
+// START: toothless appearance delay hack solution
+async function delay(ms: any) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function example() {
+    await delay(1000);
+    htmlGameStart();
+    document.body.appendChild(canvas);
+}
+example();
+// END: toothless appearance delay hack solution
 // !!! END OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
 
 // Resize Handler

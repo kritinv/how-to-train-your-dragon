@@ -62,16 +62,22 @@ audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dr
     wind.setLoop(false);
     wind.setVolume(0.5);
 });
-console.log(sounds['wind']);
 // add punch sound component
 let punch = new THREE.Audio(listener);
-sounds['punch'] = wind;
+sounds['punch'] = punch;
 audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/punch.wav', function(buffer) {
-    wind.setBuffer(buffer);
-    wind.setLoop(false);
-    wind.setVolume(0.5);
+    punch.setBuffer(buffer);
+    punch.setLoop(false);
+    punch.setVolume(0.5);
 });
-console.log(sounds['punch']);
+// add punch sound component
+let desertwind = new THREE.Audio(listener);
+sounds['desertwind'] = wind;
+audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/desertwind.wav', function(buffer) {
+    desertwind.setBuffer(buffer);
+    desertwind.setLoop(true);
+    desertwind.setVolume(0.5);
+});
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
@@ -135,23 +141,28 @@ document.addEventListener('keydown', function (event) {
         if (gameStart) {
             gameStart = false;
             gameRunning = true;
+            sounds['desertwind'].play();
             htmlGameRunning();
             // important!!! need to keep track of time
             gameStartTime = Date.now();
         } else if (gameRunning) {
             gameRunning = false;
             gamePaused = true;
+            sounds['desertwind'].stop();
             htmlGamePaused();
             // important!!! need to keep track of time
             gamePauseStart = Date.now();
         } else if (gamePaused) {
             gamePaused = false;
             gameRunning = true;
+            sounds['desertwind'].play();
             htmlGameRunning();
             // important!!! need to keep track of time
             pausedTime += (Date.now() - gamePauseStart);
             gamePauseStart = null;
-        } else if (gameOver) { }
+        } else if (gameOver) { 
+            sounds['desertwind'].stop();
+        }
     }
     eventListenerHasLock = false;
 });

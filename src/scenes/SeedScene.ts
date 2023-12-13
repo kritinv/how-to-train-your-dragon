@@ -21,6 +21,10 @@ type UpdateChild = Group & {
 class SeedScene extends Scene {
     // Define the type of the state field
     character: Toothless
+    lastObjectName: string | null = null;
+    hasCollision: boolean = false;
+
+
     state: {
         updateList: UpdateChild[];
         objList: UpdateChild[];
@@ -86,7 +90,7 @@ class SeedScene extends Scene {
         const baloon = new Balloon(timeStamp);
         const island = new Island(timeStamp);
         const randomIndex = Math.floor(Math.random() * 1000);
-        if (randomIndex > 500) {
+        if (randomIndex > 400) {
             return baloon;
         }
        // console.log(island.boundingBox)
@@ -125,6 +129,8 @@ class SeedScene extends Scene {
                 obj.update(timeStamp);
             }
 
+        if(obj.name !== this.lastObjectName){
+
             if (obj.boundingBox !== undefined) {
                 const box = new Vector3().copy(obj.boundingBox.min);
                 const position = new Vector3().copy(this.character.boundingBox.min);
@@ -137,10 +143,12 @@ class SeedScene extends Scene {
                 const collisionZ = box.z > position.z + minThreshold && box.z < position.z + maxThreshold;
             
                 if (collisionX && collisionY && collisionZ) {
-                    console.log("Collision!");
+                    this.hasCollision = true;
+                    this.lastObjectName = obj.name;
                 }
             }
-
+        }
+        
             // Check if the object is out of frame
             if (obj.outOfFrame !== undefined) {
                 if (obj.outOfFrame()) {
@@ -169,7 +177,7 @@ class SeedScene extends Scene {
 
         if (
             time_elapsed >=
-            this.state.islandSpawnInterval + this.state.lastIslandTime
+            this.state.islandSpawnInterval + this.state.lastIslandTime - 700
         ) {
             this.state.lastIslandTime = time_elapsed;
             this.spawnRandom(500, timeStamp);
@@ -195,6 +203,9 @@ class SeedScene extends Scene {
         this.character.moveDown();
     }
     getCollision() {
+        if(this.hasCollision){
+            return ['obstacle', null];
+        }
         return [null, null];
     } // return list [collisionType, reference to collision object]
 

@@ -23,10 +23,11 @@ class Balloon extends Group {
       this.scale.copy(
           new Vector3(balloonScale, balloonScale, balloonScale)
         );
+        this.rotateY(Math.random()*1000)
 
         const loader = new GLTFLoader();
 
-        this.name = 'balloon' + timeStamp;
+        this.name = `balloon${timeStamp}`;
         this.model = new Group();
         this.boundingBox = new Box3();
 

@@ -118,7 +118,7 @@ class Obstacles {
         const randomValue = Math.random();
         let object;
         let type;
-        if (randomValue < 0) {
+        if (randomValue < 0.9) {
             object = this.getRandomObstacle();
             type = 'obstacle';
         } else {

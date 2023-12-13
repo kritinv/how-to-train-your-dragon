@@ -58,6 +58,8 @@ class Toothless extends Group {
     animationCLips: { [key: string]: AnimationClip } = {};
     currentAnimation: AnimationClip | null = null;
 
+
+    // Toothless Constructor
     constructor() {
         // Call parent Group() constructor
         super();
@@ -83,7 +85,6 @@ class Toothless extends Group {
 
                 object.animations.forEach((clip) => {
                     this.animationCLips[clip.name] = clip; // Store AnimationClip
-                    console.log("animation: " + clip.name);
                 });
                 this.boundingBox = new Box3().setFromObject(this.model);
 
@@ -110,15 +111,21 @@ class Toothless extends Group {
         }
     }
     
+    // Helper functions
+    // ---------------------------------------------------------------------------------- //
     currentLane() {
         for (let i = 0; i < this.Lane.length - 1; i++) {
-            // console.log(this.position.x);
             if (this.position.x > this.Lane[i] && this.position.x < this.Lane[i+1]) {
                 return i + 1;
             }
         }
         return -1;
     }
+
+    clamp(value: number, min: number, max: number): number {
+        return Math.min(Math.max(value, min), max);
+    }
+    // ---------------------------------------------------------------------------------- //
 
     moveLeft() {
         if (this.currentLane() < 5 && this.state.action === ToothlessActions.Idle) {
@@ -200,7 +207,6 @@ class Toothless extends Group {
     update(timeStamp: number) {
         let deltaTime = timeStamp - this.Time;
         this.Time = timeStamp;
-        // console.log(this.rotation.z);
 
         // set direction and rotation based on action
         if (this.state.action == ToothlessActions.MovingLeft) {
@@ -247,11 +253,9 @@ class Toothless extends Group {
             if (this.timer.spinMove == 0) {
                 this.timer.spinMove = timeStamp;
             }
-            console.log("spinning");
             this.state.rotation.z = 1;
             this.state.rotationSpeed = Speed.RotationSpinMove;
             if (timeStamp - this.timer.spinMove > Duration.SpinMove){
-                console.log("end spinning");
                 this.state.rotation.z = 0;
                 this.state.rotationSpeed = 0;
                 this.state.action = ToothlessActions.Idle;
@@ -276,11 +280,19 @@ class Toothless extends Group {
             }
         }
 
+        // Overwrite rotation for smoother rotation when reaching target lane
+        const transitionDist = 2;
+        if ((this.state.action == ToothlessActions.MovingLeft || this.state.action == ToothlessActions.MovingRight ) && (Math.abs(this.position.x - this.LaneMiddle[this.state.targetLane - 1]) < transitionDist)) {
+            this.setRotationFromAxisAngle(new Vector3(0,0,1), (this.position.x - this.LaneMiddle[this.state.targetLane - 1])/transitionDist);
+        }
+
+        // Add hard check so Toothless doesn't leave lanes
+        this.position.set(this.clamp(this.position.x, this.LaneMiddle[0], this.LaneMiddle[-1]), this.position.y, this.position.z);
+
         // Update the mixer
         if (this.mixer) {
             this.mixer.update(deltaTime * 0.001); // Convert to seconds
         }
-
 
         // Play the animation 
         const animationDuration = 1; // Duration for crossfade
@@ -290,8 +302,8 @@ class Toothless extends Group {
         } else if (this.state.action === ToothlessActions.Idle) {
             this.playAnimation('toothless_armature|toothless_armature|toothless_armature|Action', animationDuration);
         }
-        this.boundingBox.setFromObject(this.model);
 
+        this.boundingBox.setFromObject(this.model);
     }
 }
 

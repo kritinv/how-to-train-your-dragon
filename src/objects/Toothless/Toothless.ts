@@ -1,5 +1,4 @@
-import { AnimationAction, AnimationClip, AnimationMixer, DetachedBindMode, Group, LoopOnce, LoopRepeat, Vector3, Box3 } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { AnimationClip, AnimationMixer, Group, Vector3, Box3 } from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 // add action queue and 
 enum ToothlessActions {
@@ -55,7 +54,7 @@ class Toothless extends Group {
 
     LaneMiddle = [-24, -12, 0, 12, 24];
 
-    mixer: AnimationMixer;
+    mixer!: AnimationMixer;
     animationCLips: { [key: string]: AnimationClip } = {};
     currentAnimation: AnimationClip | null = null;
 

@@ -78,8 +78,7 @@ class Obstacles {
             if (object.name !== this.state.lastObjectName) {
                 if (object.boundingBox !== undefined) {
                     const box = new Vector3().copy(object.boundingBox.min);
-                    const position = new Vector3().copy(
-                        toothless.boundingBox.min
+                    const position = new Vector3().copy(toothless.boundingBox.min);
                     const minThreshold = -20;
                     const maxThreshold = 20;
 

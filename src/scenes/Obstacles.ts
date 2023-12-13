@@ -5,6 +5,7 @@ import Toothless from '../objects/Toothless/Toothless';
 import SeedScene from './SeedScene';
 import HealthHeart from '../objects/healthheart/Healthheart';
 import FloatingRock from '../objects/FloatingRock/FloatingRock';
+import * as THREE from 'three';
 
 // Define an object type which describes each object in the update list
 type movingObject = Group & {
@@ -41,16 +42,16 @@ class Obstacles {
         this.state = {
             movementSpeed: 1000,
             spawnInterval: 3000,
-            spawnDistance: 2000,
+            spawnDistance: 500,
             prevTime: 0,
             lastObstacleSpawnTime: 0,
 
-            uniqueObstacles: [Balloon, Island],
+            uniqueObstacles: [Island, Balloon],
             uniquePowerUps: [HealthHeart],
 
             objects: [],
 
-            lanes: this.generateLanes(10),
+            lanes: this.generateLanes(5),
             lastObjectName: null,
             hasCollision: false,
             collisionType: '',
@@ -65,6 +66,8 @@ class Obstacles {
         const { movementSpeed, prevTime } = this.state;
         let deltaTime = timeStamp - prevTime;
         this.state.prevTime = timeStamp;
+        // console.log(this.state.objects.length);
+        let collided = false;
 
         for (const objectPair of this.state.objects) {
             const object = objectPair[0];
@@ -72,42 +75,24 @@ class Obstacles {
 
             // update obstacle movement
             object.position.z += (-movementSpeed * deltaTime) / 10000;
-            object.boundingBox.setFromObject(object.model);
-
             // collision detection
-            if (object.name !== this.state.lastObjectName) {
-                if (object.boundingBox !== undefined) {
-                    const box = new Vector3().copy(object.boundingBox.min);
-                    const position = new Vector3().copy(toothless.boundingBox.min);
-                    const minThreshold = -20;
-                    const maxThreshold = 20;
-
-                    const collisionX =
-                        box.x > position.x + minThreshold &&
-                        box.x < position.x + maxThreshold;
-                    const collisionY =
-                        box.y > position.y + minThreshold &&
-                        box.y < position.y + maxThreshold;
-                    const collisionZ =
-                        box.z > position.z + minThreshold &&
-                        box.z < position.z + maxThreshold;
-
-                    if (collisionX && collisionY && collisionZ) {
-                        this.state.hasCollision = true;
-                        this.state.lastObjectName = object.name;
-                        this.state.collisionType = type;
-                    } else {
-                        this.state.hasCollision = false;
-                    }
-
-                    console.log(this.state.hasCollision);
+            if (object.name !== this.state.lastObjectName && object.boundingBox !== undefined && !collided) {
+                if (object.boundingBox.clone().applyMatrix4(object.matrixWorld).intersectsBox(toothless.boundingBox.clone().applyMatrix4(toothless.matrixWorld))) {
+                    this.state.hasCollision = true;
+                    this.state.lastObjectName = object.name;
+                    this.state.collisionType = type;
+                    collided = true;
+                    // console.log(object.name);
+                } else{
+                    this.state.hasCollision = false;
                 }
+                console.log(this.state.hasCollision);
             }
 
             // remove objects that are out of frame from scene and obstacles
             if (this.outOfFrame(object)) {
-                this.removeFromObjects(objectPair);
                 this.scene.remove(object);
+                this.removeFromObjects(objectPair);
             }
 
             if (type === 'powerup') {
@@ -133,7 +118,7 @@ class Obstacles {
         const randomValue = Math.random();
         let object;
         let type;
-        if (randomValue < 0.9) {
+        if (randomValue < 0) {
             object = this.getRandomObstacle();
             type = 'obstacle';
         } else {
@@ -142,7 +127,8 @@ class Obstacles {
         }
         const rand_lane_i = Math.floor(Math.random() * this.state.lanes.length);
         const rand_lane = this.state.lanes[rand_lane_i];
-        object.position.set(rand_lane, 0, this.state.spawnDistance);
+        object.position.setX(rand_lane);
+        object.position.setZ(this.state.spawnDistance);
         this.addToObjects([object, type]);
         this.scene.add(object);
     }
@@ -172,6 +158,7 @@ class Obstacles {
     removeFromObjects(objectPair: MovingObjectPair): void {
         const index = this.state.objects.indexOf(objectPair);
         if (index !== -1) {
+            objectPair[0].boundingBox = new Box3().setFromCenterAndSize(new Vector3(-100, -100, -100), new Vector3(1, 1, 1));
             this.state.objects.splice(index, 1);
         }
     }

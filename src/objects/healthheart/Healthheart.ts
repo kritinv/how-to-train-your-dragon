@@ -4,6 +4,7 @@ import TWEEN from 'three/examples/jsm/libs/tween.module.js';
 
 // Import land model as a URL using Vite's syntax
 import MODEL from './source/model.gltf?url';
+import * as THREE from 'three';
 
 class HealthHeart extends Group {
     model: Group;
@@ -34,23 +35,19 @@ class HealthHeart extends Group {
 
         this.name = `healthheart${timeStamp}`;
         this.model = new Group();
-        this.boundingBox = new Box3();
+        this.boundingBox = new Box3().translate(new THREE.Vector3(0, 0, 20));
         this.mixer = new AnimationMixer(this.model);
+        this.position.setY(-3);
         // this.rotateY(Math.random() * 1000);
-
-        this.name = `island${timeStamp}`;
-        this.model = new Group();
-        this.boundingBox = new Box3();
-        this.rotateY(Math.random() * 1000);
 
         if (HealthHeart.cachedModel) {
             this.model = HealthHeart.cachedModel.clone();
             this.add(this.model);
-            this.boundingBox = new Box3().setFromObject(this.model);
-            const balloonScale = 3;
+            const balloonScale = 8;
             this.model.scale.copy(
                 new Vector3(balloonScale, balloonScale, balloonScale)
             );
+            this.boundingBox = this.boundingBox.setFromObject(this.model);
         } else {
             // If not loaded, load the model and cache it for future instances
             const loader = new GLTFLoader();
@@ -58,13 +55,16 @@ class HealthHeart extends Group {
                 HealthHeart.cachedModel = gltf.scene;
                 this.model = gltf.scene.clone();
                 this.add(this.model);
-                this.boundingBox = new Box3().setFromObject(this.model);
                 const balloonScale = 3;
                 this.model.scale.copy(
                     new Vector3(balloonScale, balloonScale, balloonScale)
                 );
+                this.boundingBox = this.boundingBox.setFromObject(this.model);
             });
         }
+        // Collision Box Visualizer
+        const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
+        this.add( helper );
     }
 
     spin(): void {

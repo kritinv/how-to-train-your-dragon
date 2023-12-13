@@ -63,10 +63,11 @@ const numClouds = 2500;
 for (let i = 0; i < numClouds; i++) {
     const planeObj = new THREE.Object3D();
     planeObj.position.x = Math.random() * 4000 - 2000;
-    planeObj.position.y = -Math.random() * Math.random() * 200 - 100;
+    // planeObj.position.y = -Math.random() * Math.random() * 200 - 100;
+    planeObj.position.y = -60;
     planeObj.rotation.z = Math.random() * Math.PI;
     planeObj.scale.x = planeObj.scale.y =
-        Math.random() * Math.random() * 5 + 0.5;
+        Math.random() * Math.random() * 3 + 0.5;
     planeObj.updateMatrix();
 
     const clonedPlaneGeo = planeGeo.clone();
@@ -79,11 +80,11 @@ for (let i = 0; i < numClouds; i++) {
 function updateCloud() {
     // Update each cloud's position
     cloud.children.forEach((cloudMesh) => {
-        const cloudSpeed = 7;
+        const cloudSpeed = 4;
         const newPosition = cloudMesh.position.z - cloudSpeed;
         cloudMesh.position.z =
             newPosition >= 0 ? newPosition : newPosition + numClouds;
     });
 }
-
+cloud.position.x = 0;
 export { cloud, updateCloud };

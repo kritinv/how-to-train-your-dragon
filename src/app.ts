@@ -137,7 +137,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
     setTimeout(function() {}, 1000000);
     if (gameRunning) {
         // scene.update will bring all nontoothless scene objects forwards
-        scene.update && scene.update(timeStamp);
+        scene.update && scene.update(timeStamp-pausedTime);
         // game updates based on whether there was a collision
         let collision = scene.getCollision();
         let collisionType = collision[0];

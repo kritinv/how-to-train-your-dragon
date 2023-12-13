@@ -56,6 +56,13 @@ class Obstacles {
             hasCollision: false,
             collisionType: '',
         };
+
+        this.state.uniqueObstacles.forEach(obstacle => {
+            new obstacle(Date.now());
+        });
+        this.state.uniquePowerUps.forEach(powerUp => {
+            new powerUp(Date.now());
+        });
     }
 
     // ---------------------------------------------------- //

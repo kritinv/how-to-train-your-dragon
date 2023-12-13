@@ -119,6 +119,9 @@ class SeedScene extends Scene {
         sounds['wind'].stop()
         sounds['wind'].play()
     }
+    queueCollide() {
+        this.character.collide();
+    }
     getCollision() {
         if (this.obstacles.state.hasCollision) {
             return [this.obstacles.state.collisionType, null];

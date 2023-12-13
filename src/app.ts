@@ -57,27 +57,48 @@ let audioLoader = new THREE.AudioLoader();
 // add wind sound component
 let wind = new THREE.Audio(listener);
 sounds['wind'] = wind;
-audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/wind.wav', function(buffer) {
-    wind.setBuffer(buffer);
-    wind.setLoop(false);
-    wind.setVolume(1.0);
-});
+audioLoader.load(
+    'https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/wind.wav',
+    function (buffer) {
+        wind.setBuffer(buffer);
+        wind.setLoop(false);
+        wind.setVolume(1.0);
+    }
+);
 // add punch sound component
 let punch = new THREE.Audio(listener);
 sounds['punch'] = punch;
-audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/punch.wav', function(buffer) {
-    punch.setBuffer(buffer);
-    punch.setLoop(false);
-    punch.setVolume(1.0);
-});
+audioLoader.load(
+    'https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/punch.wav',
+    function (buffer) {
+        punch.setBuffer(buffer);
+        punch.setLoop(false);
+        punch.setVolume(1.0);
+    }
+);
 // add desertwind sound component
 let desertwind = new THREE.Audio(listener);
 sounds['desertwind'] = desertwind;
-audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/desertwind.wav', function(buffer) {
-    desertwind.setBuffer(buffer);
-    desertwind.setLoop(true);
-    desertwind.setVolume(0.3);
-});
+audioLoader.load(
+    'https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/desertwind.wav',
+    function (buffer) {
+        desertwind.setBuffer(buffer);
+        desertwind.setLoop(true);
+        desertwind.setVolume(0.3);
+    }
+);
+// add testdrive sound component
+let testdrive = new THREE.Audio(listener);
+sounds['testdrive'] = testdrive;
+audioLoader.load(
+    'https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/testdrive.wav',
+    function (buffer) {
+        testdrive.setBuffer(buffer);
+        testdrive.setLoop(true);
+        testdrive.setVolume(0.5);
+    }
+);
+
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
@@ -86,7 +107,7 @@ let gameStart = true;
 // NUMBER 1.5: enum for the types of collisions. import this from SeedScene.ts
 const Collisions = {
     Obstacle: 'obstacle',
-    Powerup: 'powerup'
+    Powerup: 'powerup',
 };
 // NUMBER 1.6: other variables for keeping track of state
 let healthCount = 3;
@@ -102,12 +123,18 @@ let singlePress: any = null;
 let eventListenerHasLock = false;
 let movementHandlerHasLock = false;
 const onAnimationMovementHandler = (timeStamp: number) => {
-    while(eventListenerHasLock) {};
+    while (eventListenerHasLock) {}
     movementHandlerHasLock = true;
     if (gameRunning) {
         if (Date.now() - keyDownTime >= doublePressThreshold) {
-            if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(sounds); singlePress = null;}
-            if (singlePress === 'ArrowRight') {scene.queueMoveRight(sounds); singlePress = null;}
+            if (singlePress === 'ArrowLeft') {
+                scene.queueMoveLeft(sounds);
+                singlePress = null;
+            }
+            if (singlePress === 'ArrowRight') {
+                scene.queueMoveRight(sounds);
+                singlePress = null;
+            }
         }
     }
     // setTimeout(function() {}, 100000);
@@ -116,19 +143,33 @@ const onAnimationMovementHandler = (timeStamp: number) => {
 };
 window.requestAnimationFrame(onAnimationMovementHandler);
 document.addEventListener('keydown', function (event) {
-    while(movementHandlerHasLock) {};
+    while (movementHandlerHasLock) {}
     eventListenerHasLock = true;
     if (event.repeat) return;
     if (gameRunning) {
         // setTimeout(function() {}, 100000);
         if (event.key === 'ArrowLeft') {
-            if (singlePress === 'ArrowLeft') {scene.queueDoubleMoveLeft(sounds); singlePress = null;}
-            else if (singlePress === 'ArrowRight') {scene.queueMoveRight(sounds); singlePress = 'ArrowLeft'}
-            else {keyDownTime = Date.now(); singlePress = 'ArrowLeft'}
+            if (singlePress === 'ArrowLeft') {
+                scene.queueDoubleMoveLeft(sounds);
+                singlePress = null;
+            } else if (singlePress === 'ArrowRight') {
+                scene.queueMoveRight(sounds);
+                singlePress = 'ArrowLeft';
+            } else {
+                keyDownTime = Date.now();
+                singlePress = 'ArrowLeft';
+            }
         } else if (event.key === 'ArrowRight') {
-            if (singlePress === 'ArrowRight') {scene.queueDoubleMoveRight(sounds); singlePress = null;}
-            else if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(sounds); singlePress = "ArrowRight"}
-            else {keyDownTime = Date.now(); singlePress = 'ArrowRight'}
+            if (singlePress === 'ArrowRight') {
+                scene.queueDoubleMoveRight(sounds);
+                singlePress = null;
+            } else if (singlePress === 'ArrowLeft') {
+                scene.queueMoveLeft(sounds);
+                singlePress = 'ArrowRight';
+            } else {
+                keyDownTime = Date.now();
+                singlePress = 'ArrowRight';
+            }
         } else if (event.key === 'ArrowUp') {
             scene.queueMoveUp(sounds);
         } else if (event.key === 'ArrowDown') {
@@ -136,12 +177,13 @@ document.addEventListener('keydown', function (event) {
         } else if (event.key === 's') {
             scene.queueSpinMove(sounds);
         }
-    } 
+    }
     if (event.key === ' ') {
         if (gameStart) {
             gameStart = false;
             gameRunning = true;
             sounds['desertwind'].play();
+            sounds['testdrive'].play();
             htmlGameRunning();
             // important!!! need to keep track of time
             gameStartTime = Date.now();
@@ -149,6 +191,7 @@ document.addEventListener('keydown', function (event) {
             gameRunning = false;
             gamePaused = true;
             sounds['desertwind'].stop();
+            sounds['testdrive'].stop();
             htmlGamePaused();
             // important!!! need to keep track of time
             gamePauseStart = Date.now();
@@ -156,12 +199,14 @@ document.addEventListener('keydown', function (event) {
             gamePaused = false;
             gameRunning = true;
             sounds['desertwind'].play();
+            sounds['testdrive'].play();
             htmlGameRunning();
             // important!!! need to keep track of time
-            pausedTime += (Date.now() - gamePauseStart);
+            pausedTime += Date.now() - gamePauseStart;
             gamePauseStart = null;
-        } else if (gameOver) { 
+        } else if (gameOver) {
             sounds['desertwind'].stop();
+            sounds['testdrive'].stop();
         }
     }
     eventListenerHasLock = false;
@@ -171,7 +216,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
     // setTimeout(function() {}, 1000000);
     if (gameRunning) {
         // scene.update will bring all nontoothless scene objects forwards
-        scene.update && scene.update(timeStamp-pausedTime);
+        scene.update && scene.update(timeStamp - pausedTime);
         // game updates based on whether there was a collision
         let collision = scene.getCollision();
         let collisionType = collision[0];
@@ -189,7 +234,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
             }
         } else if (collisionType === Collisions.Powerup) {
             if (healthCount <= 2) {
-                healthCount += 1
+                healthCount += 1;
                 htmlUpdateHeart();
             }
         }
@@ -248,7 +293,7 @@ function htmlGamePaused() {
     paused.style.visibility = 'visible';
 }
 function htmlGameOver() {
-    console.log("im in here");
+    console.log('im in here');
     console.log(`${healthCount}`);
     let threeheart = document.getElementById('threeheart');
     let twoheart = document.getElementById('twoheart');
@@ -263,34 +308,33 @@ function htmlGameOver() {
 }
 function htmlUpdateScore() {
     let score = document.getElementById('score');
-    score.innerHTML = `Score: ${Math.floor((Date.now() - gameStartTime - pausedTime) / 1000)}`;
+    score.innerHTML = `Score: ${Math.floor(
+        (Date.now() - gameStartTime - pausedTime) / 1000
+    )}`;
 }
 function htmlUpdateHeart() {
-    if (healthCount == 3) { 
+    if (healthCount == 3) {
         threeheart.style.visibility = 'visible';
         twoheart.style.visibility = 'hidden';
         oneheart.style.visibility = 'hidden';
-    }
-    else if (healthCount == 2) {
+    } else if (healthCount == 2) {
         threeheart.style.visibility = 'hidden';
         twoheart.style.visibility = 'visible';
         oneheart.style.visibility = 'hidden';
-    }
-    else if (healthCount == 1) {
+    } else if (healthCount == 1) {
         threeheart.style.visibility = 'hidden';
         twoheart.style.visibility = 'hidden';
-        oneheart.style.visibility = 'visible'; 
-    }
-    else {
+        oneheart.style.visibility = 'visible';
+    } else {
         threeheart.style.visibility = 'hidden';
         twoheart.style.visibility = 'hidden';
-        oneheart.style.visibility = 'hidden'; 
+        oneheart.style.visibility = 'hidden';
     }
 }
 // setup html rendering process
 // START: toothless appearance delay hack solution
 async function delay(ms: any) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function example() {
     await delay(1000);

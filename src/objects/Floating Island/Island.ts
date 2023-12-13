@@ -30,6 +30,7 @@ class Island extends Group {
         this.name = `island${timeStamp}`;
         this.model = new Group();
         this.boundingBox = new Box3();
+        this.rotateY(Math.random()*1000)
 
     
 
@@ -45,7 +46,7 @@ class Island extends Group {
 
         });
         //this.boundingBox = new Box3().setFromObject(this.model);
-        this.rotateY(Math.random()*1000)
+      //  this.rotateY(Math.random()*1000)
 
 
     }

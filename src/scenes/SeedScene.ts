@@ -135,8 +135,8 @@ class SeedScene extends Scene {
                 const box = new Vector3().copy(obj.boundingBox.min);
                 const position = new Vector3().copy(this.character.boundingBox.min);
             
-                const minThreshold = -20;
-                const maxThreshold = 20;
+                const minThreshold = -10;
+                const maxThreshold = 10;
             
                 const collisionX = box.x > position.x + minThreshold && box.x < position.x + maxThreshold;
                 const collisionY = box.y > position.y + minThreshold && box.y < position.y + maxThreshold;
@@ -145,6 +145,7 @@ class SeedScene extends Scene {
                 if (collisionX && collisionY && collisionZ) {
                     this.hasCollision = true;
                     this.lastObjectName = obj.name;
+                    console.log("collision")
                 }
             }
         }

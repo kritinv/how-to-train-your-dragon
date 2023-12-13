@@ -2,7 +2,6 @@ import { AnimationClip, AnimationMixer, Group, Box3, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import TWEEN from 'three/examples/jsm/libs/tween.module.js';
 
-
 // Import land model as a URL using Vite's syntax
 import MODEL from './source/model.gltf?url';
 
@@ -10,16 +9,14 @@ class HealthHeart extends Group {
     model: Group;
     boundingBox: Box3;
     mixer: AnimationMixer;
+    static cachedModel: Group | null = null;
 
     // Define the type of the state field
     state: {
-        movementSpeed: number;
         Time: number;
-
-            bob: boolean;
-            spin: () => void;
-            twirl: number;
-        
+        bob: boolean;
+        spin: () => void;
+        twirl: number;
     };
 
     constructor(timeStamp: number) {
@@ -27,8 +24,7 @@ class HealthHeart extends Group {
 
         // Init state
         this.state = {
-            movementSpeed: 1000.0,
-            Time: timeStamp,
+            Time: 0,
             bob: true,
             spin: () => this.spin(), // or this.spin.bind(this)
             twirl: 0,
@@ -40,23 +36,35 @@ class HealthHeart extends Group {
         this.model = new Group();
         this.boundingBox = new Box3();
         this.mixer = new AnimationMixer(this.model);
-       // this.rotateY(Math.random() * 1000);
+        // this.rotateY(Math.random() * 1000);
 
-        loader.load(MODEL, (gltf) => {
-            // Set the model and add it to the group
-            this.model = gltf.scene;
+        this.name = `island${timeStamp}`;
+        this.model = new Group();
+        this.boundingBox = new Box3();
+        this.rotateY(Math.random() * 1000);
+
+        if (HealthHeart.cachedModel) {
+            this.model = HealthHeart.cachedModel.clone();
             this.add(this.model);
-
-            // Set bounding box
             this.boundingBox = new Box3().setFromObject(this.model);
-
             const balloonScale = 3;
             this.model.scale.copy(
                 new Vector3(balloonScale, balloonScale, balloonScale)
-              );
-    
-        });
-    
+            );
+        } else {
+            // If not loaded, load the model and cache it for future instances
+            const loader = new GLTFLoader();
+            loader.load(MODEL, (gltf: GLTF) => {
+                HealthHeart.cachedModel = gltf.scene;
+                this.model = gltf.scene.clone();
+                this.add(this.model);
+                this.boundingBox = new Box3().setFromObject(this.model);
+                const balloonScale = 3;
+                this.model.scale.copy(
+                    new Vector3(balloonScale, balloonScale, balloonScale)
+                );
+            });
+        }
     }
 
     spin(): void {
@@ -80,36 +88,17 @@ class HealthHeart extends Group {
         jumpUp.start();
     }
 
-    outOfFrame(): boolean {
-        return this.position.z < 0;
-    }
-
     update(timeStamp: number): void {
-        const { movementSpeed } = this.state;
         let deltaTime = timeStamp - this.state.Time;
-        this.state.Time += deltaTime;
-        let scale = 1;
-       
-
-
-        if (this.position.z > 500) {
-            scale = scale * 1.5;
-            this.position.z = this.position.z + (-movementSpeed * deltaTime * scale) / 10000;
-        } else {
-            this.position.z = this.position.z + (-movementSpeed * deltaTime) / 10000;
-        }
+        this.state.Time = timeStamp;
 
         // Update the animation mixer
         this.mixer.update(deltaTime);
 
-        this.boundingBox.setFromObject(this.model);
-        
-           // this.rotation.z = 0.05 * Math.sin(timeStamp / 300);
-        
-            // Lazy implementation of twirl
-            this.state.twirl -= Math.PI / 8;
-            this.rotation.y += Math.PI / 8;
-        
+        // Lazy implementation of twirl
+        this.state.twirl -= Math.PI / 20;
+        this.rotation.y += Math.PI / 20;
+
         TWEEN.update();
     }
 }

@@ -27,9 +27,10 @@ class Island extends Group {
 
         const loader = new GLTFLoader();
 
-        this.name = 'island' + timeStamp;
+        this.name = `island${timeStamp}`;
         this.model = new Group();
         this.boundingBox = new Box3();
+        this.rotateY(Math.random()*1000)
 
     
 
@@ -45,7 +46,8 @@ class Island extends Group {
 
         });
         //this.boundingBox = new Box3().setFromObject(this.model);
-        
+      //  this.rotateY(Math.random()*1000)
+
 
     }
        

@@ -222,6 +222,8 @@ function htmlGameOver() {
     oneheart.style.visibility = 'hidden';
     let gameover = document.getElementById('gameover');
     gameover.style.visibility = 'visible';
+    let greywash = document.getElementById('greywash');
+    greywash.style.visibility = 'visible';
 }
 function htmlUpdateScore() {
     let score = document.getElementById('score');

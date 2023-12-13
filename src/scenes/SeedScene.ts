@@ -4,6 +4,7 @@ import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
 import { cloud, updateCloud } from '../objects/Clouds/Clouds';
 import Obstacles from '../scenes/Obstacles';
+import * as THREE from 'three';
 
 // import * as Dat from 'dat.gui';
 // import Balloon from '../objects/Balloon/Balloon';
@@ -57,6 +58,10 @@ class SeedScene extends Scene {
 
         // Add items  to update list
         this.addToUpdateList(toothless);
+
+        // Collision Box Visualizer
+        const helper = new THREE.Box3Helper( this.character.boundingBox, 0xffff00 );
+        this.add( helper );
     }
 
     addToUpdateList(object: UpdateChild): void {

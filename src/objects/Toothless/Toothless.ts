@@ -287,7 +287,8 @@ class Toothless extends Group {
         }
 
         // Add hard check so Toothless doesn't leave lanes
-        this.position.set(this.clamp(this.position.x, this.LaneMiddle[0], this.LaneMiddle[-1]), this.position.y, this.position.z);
+        const EPS = 0.01;
+        this.position.set(this.clamp(this.position.x, this.LaneMiddle[0]-EPS, this.LaneMiddle[4]+EPS), this.position.y, this.position.z);
 
         // Update the mixer
         if (this.mixer) {

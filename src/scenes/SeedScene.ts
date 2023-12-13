@@ -102,7 +102,7 @@ class SeedScene extends Scene {
     }
     getCollision() {
         if (this.obstacles.state.hasCollision) {
-            return ['obstacle', null];
+            return [this.obstacles.state.collisionType, null];
         }
         return [null, null];
     } // return list [collisionType, reference to collision object]

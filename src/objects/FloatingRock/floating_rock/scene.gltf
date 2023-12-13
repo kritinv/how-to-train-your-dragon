@@ -1,0 +1,223 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 271,
+      "max": [
+        1.1141616106033325,
+        0.7235991954803467,
+        0.9863638281822205
+      ],
+      "min": [
+        -0.9864250421524048,
+        -1.1477317810058594,
+        -0.9733672738075256
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 3252,
+      "componentType": 5126,
+      "count": 271,
+      "max": [
+        0.9821397662162781,
+        0.9992747902870178,
+        0.986539900302887
+      ],
+      "min": [
+        -0.9921241998672485,
+        -0.9838130474090576,
+        -0.9802221059799194
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 271,
+      "max": [
+        1.0,
+        0.7896685004234314
+      ],
+      "min": [
+        0.0,
+        0.20000000298023224
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 906,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "roxyspring (https://sketchfab.com/roxyspring)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/floating-rock-665c5f6265c540b1a19574ff03f6a2ce",
+      "title": "Floating Rock"
+    },
+    "generator": "Sketchfab-12.67.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 3624,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2168,
+      "byteOffset": 3624,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 6504,
+      "byteOffset": 5792,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 12296,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "dirt",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.087,
+          0.0232812,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.5969985225179213
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "pSolid1_dirt_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "9b80918ec3414efdb72d393dc1fa1fd1.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        79.22157287597656,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        79.22157287597656,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        79.22157287597656,
+        0.0,
+        0.0,
+        89.4880142211914,
+        0.0,
+        1.0
+      ],
+      "name": "pSolid1"
+    },
+    {
+      "mesh": 0,
+      "name": "pSolid1_dirt_0"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

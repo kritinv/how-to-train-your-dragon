@@ -1,0 +1,11 @@
+Model Information:
+* title:	Floating Rock
+* source:	https://sketchfab.com/3d-models/floating-rock-665c5f6265c540b1a19574ff03f6a2ce
+* author:	roxyspring (https://sketchfab.com/roxyspring)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Floating Rock" (https://sketchfab.com/3d-models/floating-rock-665c5f6265c540b1a19574ff03f6a2ce) by roxyspring (https://sketchfab.com/roxyspring) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

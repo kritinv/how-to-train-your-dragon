@@ -4,6 +4,7 @@ import Island from '../objects/Floating Island/Island';
 import Toothless from '../objects/Toothless/Toothless';
 import SeedScene from './SeedScene';
 import HealthHeart from '../objects/healthheart/Healthheart';
+import FloatingRock from '../objects/FloatingRock/FloatingRock';
 
 // Define an object type which describes each object in the update list
 type movingObject = Group & {
@@ -32,6 +33,7 @@ class Obstacles {
         lanes: number[];
         lastObjectName: string | null;
         hasCollision: boolean;
+        collisionType: string;
     };
 
     constructor(scene: SeedScene) {
@@ -51,6 +53,7 @@ class Obstacles {
             lanes: this.generateLanes(10),
             lastObjectName: null,
             hasCollision: false,
+            collisionType: '',
         };
     }
 
@@ -92,7 +95,8 @@ class Obstacles {
                 if (collisionX && collisionY && collisionZ) {
                     this.state.hasCollision = true;
                     this.state.lastObjectName = object.name;
-                    console.log('Collision!');
+                    this.state.collisionType = type;
+                    console.log(type);
                 }
             }
 

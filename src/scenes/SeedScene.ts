@@ -7,6 +7,7 @@ import Balloon from '../objects/Balloon/Balloon';
 import Island from '../objects/Floating Island/Island';
 import { cloud, updateCloud } from '../objects/Clouds/Clouds';
 import Heart from '../objects/Heart/Heart';
+import HealthHeart from '../objects/healthheart/Healthheart';
 import Obstacles from '../scenes/Obstacles';
 import Collisions from '../app';
 import { VERSION } from 'three/examples/jsm/libs/tween.module';
@@ -89,8 +90,12 @@ class SeedScene extends Scene {
     chooseRandomObject(timeStamp: number) {
         const baloon = new Balloon(timeStamp);
         const island = new Island(timeStamp);
+        const powerUp = new HealthHeart(timeStamp);
         const randomIndex = Math.floor(Math.random() * 1000);
-        if (randomIndex > 400) {
+        if (randomIndex < 100) {
+            return powerUp;
+           // return baloon;
+        }if(randomIndex<600){
             return baloon;
         }
        // console.log(island.boundingBox)

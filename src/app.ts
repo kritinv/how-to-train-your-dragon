@@ -60,7 +60,7 @@ sounds['wind'] = wind;
 audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/wind.wav', function(buffer) {
     wind.setBuffer(buffer);
     wind.setLoop(false);
-    wind.setVolume(0.5);
+    wind.setVolume(1.0);
 });
 // add punch sound component
 let punch = new THREE.Audio(listener);
@@ -68,15 +68,15 @@ sounds['punch'] = punch;
 audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/punch.wav', function(buffer) {
     punch.setBuffer(buffer);
     punch.setLoop(false);
-    punch.setVolume(0.5);
+    punch.setVolume(1.0);
 });
-// add punch sound component
+// add desertwind sound component
 let desertwind = new THREE.Audio(listener);
-sounds['desertwind'] = wind;
+sounds['desertwind'] = desertwind;
 audioLoader.load('https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/desertwind.wav', function(buffer) {
     desertwind.setBuffer(buffer);
     desertwind.setLoop(true);
-    desertwind.setVolume(0.5);
+    desertwind.setVolume(0.3);
 });
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;

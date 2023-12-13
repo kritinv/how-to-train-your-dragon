@@ -49,6 +49,19 @@ controls.maxDistance = 16;
 controls.update();
 
 // !!! START OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
+// NUMBER 0: add audio functionality to the game
+let listener = new THREE.AudioListener();
+camera.add(listener);
+let sounds: any = [];
+let wind = new THREE.Audio(listener);
+sounds['wind'] = wind;
+let audioLoader = new THREE.AudioLoader();
+audioLoader.load('../sounds/wind.wav', function(buffer) {
+    wind.setBuffer(buffer);
+    wind.setLoop(false);
+    wind.setVolume(0.5);
+});
+console.log(sounds);
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
@@ -77,8 +90,8 @@ const onAnimationMovementHandler = (timeStamp: number) => {
     movementHandlerHasLock = true;
     if (gameRunning) {
         if (Date.now() - keyDownTime >= doublePressThreshold) {
-            if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(); singlePress = null;}
-            if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = null;}
+            if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(sounds); singlePress = null;}
+            if (singlePress === 'ArrowRight') {scene.queueMoveRight(sounds); singlePress = null;}
         }
     }
     // setTimeout(function() {}, 100000);
@@ -93,19 +106,19 @@ document.addEventListener('keydown', function (event) {
     if (gameRunning) {
         // setTimeout(function() {}, 100000);
         if (event.key === 'ArrowLeft') {
-            if (singlePress === 'ArrowLeft') {scene.queueDoubleMoveLeft(); singlePress = null;}
-            else if (singlePress === 'ArrowRight') {scene.queueMoveRight(); singlePress = 'ArrowLeft'}
+            if (singlePress === 'ArrowLeft') {scene.queueDoubleMoveLeft(sounds); singlePress = null;}
+            else if (singlePress === 'ArrowRight') {scene.queueMoveRight(sounds); singlePress = 'ArrowLeft'}
             else {keyDownTime = Date.now(); singlePress = 'ArrowLeft'}
         } else if (event.key === 'ArrowRight') {
-            if (singlePress === 'ArrowRight') {scene.queueDoubleMoveRight(); singlePress = null;}
-            else if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(); singlePress = "ArrowRight"}
+            if (singlePress === 'ArrowRight') {scene.queueDoubleMoveRight(sounds); singlePress = null;}
+            else if (singlePress === 'ArrowLeft') {scene.queueMoveLeft(sounds); singlePress = "ArrowRight"}
             else {keyDownTime = Date.now(); singlePress = 'ArrowRight'}
         } else if (event.key === 'ArrowUp') {
-            scene.queueMoveUp();
+            scene.queueMoveUp(sounds);
         } else if (event.key === 'ArrowDown') {
-            scene.queueMoveDown();
+            scene.queueMoveDown(sounds);
         } else if (event.key === 's') {
-            scene.queueSpinMove();
+            scene.queueSpinMove(sounds);
         }
     } 
     if (event.key === ' ') {

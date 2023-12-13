@@ -84,26 +84,33 @@ class SeedScene extends Scene {
         }
     }
 
-    queueMoveLeft() {
+    queueMoveLeft(sounds: any) {
         this.character.moveLeft();
+        sounds['wind'].play()
     }
-    queueDoubleMoveLeft() {
+    queueDoubleMoveLeft(sounds: any) {
         this.character.doubleMoveLeft();
+        sounds['wind'].play()
     }
-    queueMoveRight() {
+    queueMoveRight(sounds: any) {
         this.character.moveRight();
+        sounds['wind'].play()
     }
-    queueDoubleMoveRight() {
+    queueDoubleMoveRight(sounds: any) {
         this.character.doubleMoveRight();
+        sounds['wind'].play()
     }
-    queueMoveUp() {
+    queueMoveUp(sounds: any) {
         this.character.moveUp();
+        sounds['wind'].play()
     }
-    queueMoveDown() {
+    queueMoveDown(sounds: any) {
         this.character.moveDown();
+        sounds['wind'].play()
     }
-    queueSpinMove() {
+    queueSpinMove(sounds: any) {
         this.character.spinMove();
+        sounds['wind'].play()
     }
     getCollision() {
         if (this.obstacles.state.hasCollision) {

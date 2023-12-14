@@ -82,9 +82,9 @@ sounds['sparkle'] = sparkle;
 audioLoader.load(
     'https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/sparkle.wav',
     function (buffer) {
-        punch.setBuffer(buffer);
-        punch.setLoop(false);
-        punch.setVolume(1.0);
+        sparkle.setBuffer(buffer);
+        sparkle.setLoop(false);
+        sparkle.setVolume(1.0);
     }
 );
 // add desertwind sound component

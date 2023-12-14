@@ -326,7 +326,7 @@ function htmlGameOver() {
 function htmlUpdateScore() {
     let score = document.getElementById('score');
     if (score != null) score.innerHTML = `Score: ${Math.floor(
-        (Date.now() - gameStartTime - pausedTime) / 1000
+        (Date.now() - gameStartTime - pausedTime) / 50
     )}`;
 }
 function htmlUpdateHeart() {

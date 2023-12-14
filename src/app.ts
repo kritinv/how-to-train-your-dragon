@@ -10,6 +10,7 @@ import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import SeedScene from './scenes/SeedScene';
 import * as THREE from 'three';
+
 // import startScreenContent from '../istartscreen.html';
 
 // Initialize core ThreeJS components
@@ -109,7 +110,26 @@ audioLoader.load(
         testdrive.setVolume(0.25);
     }
 );
-
+// START: toothless appearance delay hack solution
+htmlStandby();
+let dontregisterspace = true;
+async function delay(ms: any) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function example() {
+    function disableKeypresses(event: any) {
+        event.preventDefault();
+    }
+    document.addEventListener('keydown', disableKeypresses);
+    await delay(5000);
+    dontregisterspace = false;
+    document.removeEventListener('keydown', disableKeypresses);
+    htmlRemStandby();
+    htmlGameStart();
+    document.body.appendChild(canvas);
+}
+example();
+// END: toothless appearance delay hack solution
 // NUMBER 1: variables for game's finite state machine
 let gameOver = false;
 let gamePaused = false;
@@ -192,7 +212,7 @@ document.addEventListener('keydown', function (event) {
             scene.queueSpinMove(sounds);
         }
     }
-    if (event.key === ' ') {
+    if (event.key === ' ' && !dontregisterspace) {
         if (gameStart) {
             gameStart = false;
             gameRunning = true;
@@ -231,9 +251,8 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
     // setTimeout(function() {}, 1000000);
     if (gameRunning) {
         // activate instadeath mode once passing a time threshold
-        console.log((Date.now() - gameStartTime - pausedTime) / 50);
         if (!instaDeathMode && Math.floor((Date.now() - gameStartTime - pausedTime) / 50)
-        >= 1300) {console.log('in here'); instaDeathMode = true; healthCount = 1; htmlUpdateHeart();}
+        >= 1300) {instaDeathMode = true; healthCount = 1; htmlUpdateHeart();}
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp - pausedTime);
         // game updates based on whether there was a collision
@@ -283,11 +302,10 @@ window.requestAnimationFrame(onAnimationFrameHandler);
 function htmlGameStart() {
     let startScreen = document.createElement('div');
     startScreen.id = 'startScreen';
-    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;isibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover,#instadeath {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;} #instadeath {visibility: hidden} #oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 42.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 38.5%;}</style></head><body><div id="greywash"></div><p id="title">Fury Rush</p><p id="credits">made with love by: Mila, Bomb, Ketya, Jason</p><p id="instructions"><b>Instructions:</b> <br />use &#8594; &#8593; &#8595; &#8592; to move Toothless <br />use &#8594;&#8594; and &#8592;&#8592; to move quickly <br />use s to make Toothless do a spin move  <br />press spacebar to pause/resume</p><div id="start"><b>Press SPACEBAR to Start</b></div><div id="paused"><b>Game Paused</b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score">Score: 0</p><div id="instadeath"><b>Instadeath Level Reached</b></div><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
-
+    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;isibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover,#instadeath {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#standby {font-size: 2em;position: absolute;top: 50%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0,  0, 0.75);visibility: hidden}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;} #instadeath {visibility: hidden} #oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 44.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 42.5%;}</style></head><body><div id="greywash"></div><p id="title"><b>Fury Rush</b></p><p id="credits">made with love by: Mila, Bomb, Ketya, Jason</p><p id="instructions"><b>Instructions:</b> <br />use &#8594; &#8593; &#8595; &#8592; to move Toothless <br />use s to make Toothless do a spin move  <br />press spacebar to pause/resume</p><div id="start"><b>Press SPACEBAR to Start</b></div><div id="paused"><b>Game Paused</b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score">Score: 0</p><div id="instadeath"><b>Instadeath Level Reached</b></div><div id="standby"><b>Please Standby</b></div><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
     document.body.appendChild(startScreen);
     let greywash = document.getElementById('greywash') || null;
-    if (greywash !== null) greywash.style.visibility = 'visible';
+    if (greywash !== null) greywash.style.visibility = 'hidden';
     let start = document.getElementById('start');
     if (start !== null) start.style.visibility = 'visible';
     let paused = document.getElementById('paused');
@@ -320,8 +338,6 @@ function htmlGamePaused() {
     if (paused !== null) paused.style.visibility = 'visible';
 }
 function htmlGameOver() {
-    console.log('im in here');
-    console.log(`${healthCount}`);
     let instadeath = document.getElementById('instadeath');
     if (instadeath !== null) {instadeath.style.visibility = 'hidden'}
     let threeheart = document.getElementById('threeheart');
@@ -366,18 +382,18 @@ function htmlUpdateHeart() {
         if (oneheart !== null) oneheart.style.visibility = 'hidden';
     }
 }
-// setup html rendering process
-// START: toothless appearance delay hack solution
-async function delay(ms: any) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+function htmlStandby() {
+    let startScreen = document.createElement('div');
+    startScreen.id = 'startScreen';
+    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;visibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover,#instadeath {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#standby {font-size: 2em;position: absolute;top: 50%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0,  0, 0.75);visibility: hidden}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;} #instadeath {visibility: hidden} #oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 42.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 38.5%;}</style></head><body><div id="greywash"></div><p id="title"><b></b></p><p id="credits"></p><p id="instructions"><div id="start"><b></b></div><div id="paused"><b></b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score"></p><div id="instadeath"><b>Instadeath Level Reached</b></div><div id="standby"><b>Loading Game...</b></div><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
+    document.body.appendChild(startScreen);
+    let standby = document.getElementById('standby');
+    if (standby !== null) {standby.style.visibility = 'visible'}
 }
-async function example() {
-    await delay(5000);
-    htmlGameStart();
-    document.body.appendChild(canvas);
+function htmlRemStandby() {
+    let startScreen = document.getElementById('startScreen');
+    if (startScreen !== null) document.body.removeChild(startScreen);
 }
-example();
-// END: toothless appearance delay hack solution
 // !!! END OF EXCLUSIVELY STUDENT CONTRIBUTION SECTION - Jason !!!
 
 // Resize Handler

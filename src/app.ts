@@ -131,11 +131,7 @@ let pausedTime = 0;
 let doublePressThreshold = 200;
 let keyDownTime: any = null;
 let singlePress: any = null;
-let eventListenerHasLock = false;
-let movementHandlerHasLock = false;
 const onAnimationMovementHandler = (timeStamp: number) => {
-    while (eventListenerHasLock) {}
-    movementHandlerHasLock = true;
     if (gameRunning) {
         if (Date.now() - keyDownTime >= doublePressThreshold) {
             if (singlePress === 'ArrowLeft') {
@@ -149,13 +145,10 @@ const onAnimationMovementHandler = (timeStamp: number) => {
         }
     }
     // setTimeout(function() {}, 100000);
-    movementHandlerHasLock = false;
     window.requestAnimationFrame(onAnimationMovementHandler);
 };
 window.requestAnimationFrame(onAnimationMovementHandler);
 document.addEventListener('keydown', function (event) {
-    while (movementHandlerHasLock) {}
-    eventListenerHasLock = true;
     if (event.repeat) return;
     if (gameRunning) {
         // setTimeout(function() {}, 100000);
@@ -220,7 +213,6 @@ document.addEventListener('keydown', function (event) {
             sounds['testdrive'].stop();
         }
     }
-    eventListenerHasLock = false;
 });
 // NUMBER 3: game updates on a regular interval
 const onAnimationUpdateHandler = (timeStamp: number) => {

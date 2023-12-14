@@ -344,7 +344,7 @@ async function delay(ms: any) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function example() {
-    await delay(4000);
+    await delay(5000);
     htmlGameStart();
     document.body.appendChild(canvas);
 }

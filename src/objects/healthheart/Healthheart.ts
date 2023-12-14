@@ -55,13 +55,14 @@ class HealthHeart extends Group {
                 HealthHeart.cachedModel = gltf.scene;
                 this.model = gltf.scene.clone();
                 this.add(this.model);
-                const balloonScale = 3;
+                const balloonScale = 8;
                 this.model.scale.copy(
                     new Vector3(balloonScale, balloonScale, balloonScale)
                 );
                 this.boundingBox = this.boundingBox.setFromObject(this.model);
             });
         }
+        this.boundingBox.set(this.boundingBox.min.add(new THREE.Vector3(5,3,4).multiplyScalar(-1)), this.boundingBox.max.add(new THREE.Vector3(5,3,4)));
         // Collision Box Visualizer
         const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
         this.add( helper );

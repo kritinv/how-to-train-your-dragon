@@ -1,4 +1,4 @@
-import { Scene, Vector3, Fog, Group, Box3, Mesh } from 'three';
+import { Scene, Fog} from 'three';
 import sky from '../scenes/Sky';
 import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
@@ -70,7 +70,7 @@ class SeedScene extends Scene {
 
     update(timeStamp: number): void {
         // Update clouds
-        updateCloud(timeStamp);
+        updateCloud();
 
         // Update obstacles
         this.obstacles.update(timeStamp, this.character);

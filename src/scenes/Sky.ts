@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+// @ts-ignore
 import { Sky } from 'three/addons/objects/Sky.js';
 
 const sky = new Sky();

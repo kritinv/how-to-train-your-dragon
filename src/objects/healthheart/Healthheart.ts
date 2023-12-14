@@ -1,5 +1,5 @@
-import { AnimationClip, AnimationMixer, Group, Box3, Vector3 } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { AnimationMixer, Group, Box3, Vector3 } from 'three';
+import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import TWEEN from 'three/examples/jsm/libs/tween.module.js';
 
 // Import land model as a URL using Vite's syntax
@@ -30,8 +30,6 @@ class HealthHeart extends Group {
             spin: () => this.spin(), // or this.spin.bind(this)
             twirl: 0,
         };
-
-        const loader = new GLTFLoader();
 
         this.name = `healthheart${timeStamp}`;
         this.model = new Group();

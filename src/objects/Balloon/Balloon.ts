@@ -15,7 +15,7 @@ class Balloon extends Group {
         const balloonScale = 0.0008;
         this.scale.copy(new Vector3(balloonScale, balloonScale, balloonScale));
         this.position.setY(-8);
-        this.rotateY(Math.random() * 1000);
+        // this.rotateY(Math.random() * 1000);
         this.name = `balloon${timeStamp}`;
         this.model = new Group();
         this.boundingBox = new Box3().translate(new THREE.Vector3(0, 0, 20));

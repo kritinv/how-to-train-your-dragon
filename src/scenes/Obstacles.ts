@@ -4,8 +4,6 @@ import Island from '../objects/Floating Island/Island';
 import Toothless from '../objects/Toothless/Toothless';
 import SeedScene from './SeedScene';
 import HealthHeart from '../objects/healthheart/Healthheart';
-import FloatingRock from '../objects/FloatingRock/FloatingRock';
-import * as THREE from 'three';
 import { gameStartTime, pausedTime } from '../app';
 
 // Define an object type which describes each object in the update list

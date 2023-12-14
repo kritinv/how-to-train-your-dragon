@@ -131,6 +131,7 @@ let pausedTime = 0;
 let doublePressThreshold = 200;
 let keyDownTime: any = null;
 let singlePress: any = null;
+/*
 const onAnimationMovementHandler = (timeStamp: number) => {
     if (gameRunning) {
         if (Date.now() - keyDownTime >= doublePressThreshold) {
@@ -148,11 +149,14 @@ const onAnimationMovementHandler = (timeStamp: number) => {
     window.requestAnimationFrame(onAnimationMovementHandler);
 };
 window.requestAnimationFrame(onAnimationMovementHandler);
+*/
 document.addEventListener('keydown', function (event) {
     if (event.repeat) return;
     if (gameRunning) {
         // setTimeout(function() {}, 100000);
         if (event.key === 'ArrowLeft') {
+            scene.queueMoveLeft(sounds);
+            /*
             if (singlePress === 'ArrowLeft') {
                 scene.queueDoubleMoveLeft(sounds);
                 singlePress = null;
@@ -163,7 +167,10 @@ document.addEventListener('keydown', function (event) {
                 keyDownTime = Date.now();
                 singlePress = 'ArrowLeft';
             }
+            */
         } else if (event.key === 'ArrowRight') {
+            scene.queueMoveRight(sounds);
+            /*
             if (singlePress === 'ArrowRight') {
                 scene.queueDoubleMoveRight(sounds);
                 singlePress = null;
@@ -174,10 +181,11 @@ document.addEventListener('keydown', function (event) {
                 keyDownTime = Date.now();
                 singlePress = 'ArrowRight';
             }
+            */
         } else if (event.key === 'ArrowUp') {
-            scene.queueMoveUp(sounds);
+            scene.queueDoubleMoveRight(sounds);
         } else if (event.key === 'ArrowDown') {
-            scene.queueMoveDown(sounds);
+            scene.queueDoubleMoveLeft(sounds);
         } else if (event.key === 's') {
             scene.queueSpinMove(sounds);
         }

@@ -1,5 +1,6 @@
 import { Box3, Vector3, Group } from 'three';
 import Balloon from '../objects/Balloon/Balloon';
+import Spaceship from '../objects/Spaceship/spaceship';
 import Island from '../objects/Floating Island/Island';
 import Toothless from '../objects/Toothless/Toothless';
 import SeedScene from './SeedScene';
@@ -45,7 +46,7 @@ class Obstacles {
             prevTime: 0,
             lastObstacleSpawnTime: 0,
 
-            uniqueObstacles: [Island, Balloon],
+            uniqueObstacles: [Island, Balloon, Spaceship],
             uniquePowerUps: [HealthHeart],
 
             objects: [],

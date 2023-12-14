@@ -1,0 +1,11 @@
+Model Information:
+* title:	hull spaceship
+* source:	https://sketchfab.com/3d-models/hull-spaceship-72ab5f7cbeb541c69f0ca286b2c0310b
+* author:	mohamedhussien (https://sketchfab.com/mohamedhussien)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "hull spaceship" (https://sketchfab.com/3d-models/hull-spaceship-72ab5f7cbeb541c69f0ca286b2c0310b) by mohamedhussien (https://sketchfab.com/mohamedhussien) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

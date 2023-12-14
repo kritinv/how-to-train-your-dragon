@@ -96,7 +96,7 @@ class Toothless extends Group {
                     this.animationCLips[clip.name] = clip; // Store AnimationClip
                 });
                 this.boundingBox = this.boundingBox.setFromObject(this.model);
-
+                this.boundingBox.max.add(new Vector3(0,0,-3));
                 object.traverse((child) => {
                     if ((<THREE.Mesh> child).isMesh) {
                         const mesh = child as Mesh;
@@ -109,6 +109,7 @@ class Toothless extends Group {
 
             },
         );
+
            
         // this.rotateOnAxis(new Vector3(0, 1, 0), 1);
         this.currentAnimation = this.animationCLips[0];
@@ -311,7 +312,7 @@ class Toothless extends Group {
         // Apply movement
         if (this.state.direction.lengthSq() > 0) {
             this.position.addScaledVector(this.state.direction.normalize(), this.state.speed * deltaTime);
-            this.boundingBox.setFromCenterAndSize(this.position.clone(), this.boundingBox.max.add(this.boundingBox.min.multiplyScalar(-1)));
+            this.boundingBox.setFromCenterAndSize(this.position.clone(), this.boundingBox.max.clone().add(this.boundingBox.min.clone().multiplyScalar(-1)));
         }
 
         // Apply rotation

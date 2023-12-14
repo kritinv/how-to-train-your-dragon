@@ -123,14 +123,14 @@ const Collisions = {
 // NUMBER 1.6: other variables for keeping track of state
 let healthCount = 3;
 let gameStartTime: any = null;
-let gameEndTime: any = null;
+// let gameEndTime: any = null;
 let gamePauseStart: any = null;
-let elapsedTime = 0;
+// let elapsedTime = 0;
 let pausedTime = 0;
 // NUMBER 2: game responds to player keyboard input
-let doublePressThreshold = 200;
-let keyDownTime: any = null;
-let singlePress: any = null;
+// let doublePressThreshold = 200;
+// let keyDownTime: any = null;
+// let singlePress: any = null;
 /*
 const onAnimationMovementHandler = (timeStamp: number) => {
     if (gameRunning) {
@@ -278,34 +278,34 @@ function htmlGameStart() {
     startScreen.id = 'startScreen';
     startScreen.innerHTML = startScreenContent;
     document.body.appendChild(startScreen);
-    let greywash = document.getElementById('greywash');
-    greywash.style.visibility = 'visible';
+    let greywash = document.getElementById('greywash') || null;
+    if (greywash !== null) greywash.style.visibility = 'visible';
     let start = document.getElementById('start');
-    start.style.visibility = 'visible';
+    if (start !== null) start.style.visibility = 'visible';
     let paused = document.getElementById('paused');
-    paused.style.visibility = 'hidden';
+    if (paused !== null) paused.style.visibility = 'hidden';
 }
 function htmlGameRunning() {
     let greywash = document.getElementById('greywash');
-    greywash.style.visibility = 'hidden';
+    if (greywash !== null) greywash.style.visibility = 'hidden';
     let start = document.getElementById('start');
-    start.style.visibility = 'hidden';
+    if (start !== null) start.style.visibility = 'hidden';
     let paused = document.getElementById('paused');
-    paused.style.visibility = 'hidden';
+    if (paused !== null) paused.style.visibility = 'hidden';
     let threeheart = document.getElementById('threeheart');
     let twoheart = document.getElementById('twoheart');
     let oneheart = document.getElementById('oneheart');
-    if (healthCount == 3) threeheart.style.visibility = 'visible';
-    else if (healthCount == 2) twoheart.style.visibility = 'visible';
-    else if (healthCount == 1) oneheart.style.visibility = 'visible';
+    if (threeheart !== null) {if (healthCount == 3) threeheart.style.visibility = 'visible';}
+    else if (healthCount == 2) {if (twoheart !== null) twoheart.style.visibility = 'visible';}
+    else if (healthCount == 1) {if (oneheart !== null) oneheart.style.visibility = 'visible';}
 }
 function htmlGamePaused() {
     let greywash = document.getElementById('greywash');
-    greywash.style.visibility = 'visible';
+    if (greywash !== null) greywash.style.visibility = 'visible';
     let start = document.getElementById('start');
-    start.style.visibility = 'hidden';
+    if (start !== null) start.style.visibility = 'hidden';
     let paused = document.getElementById('paused');
-    paused.style.visibility = 'visible';
+    if (paused !== null) paused.style.visibility = 'visible';
 }
 function htmlGameOver() {
     console.log('im in here');
@@ -313,37 +313,40 @@ function htmlGameOver() {
     let threeheart = document.getElementById('threeheart');
     let twoheart = document.getElementById('twoheart');
     let oneheart = document.getElementById('oneheart');
-    threeheart.style.visibility = 'hidden';
-    twoheart.style.visibility = 'hidden';
-    oneheart.style.visibility = 'hidden';
+    if (threeheart !== null) threeheart.style.visibility = 'hidden';
+    if (twoheart !== null) twoheart.style.visibility = 'hidden';
+    if (oneheart !== null) oneheart.style.visibility = 'hidden';
     let gameover = document.getElementById('gameover');
-    gameover.style.visibility = 'visible';
+    if (gameover !== null) gameover.style.visibility = 'visible';
     let greywash = document.getElementById('greywash');
-    greywash.style.visibility = 'visible';
+    if (greywash !== null) greywash.style.visibility = 'visible';
 }
 function htmlUpdateScore() {
     let score = document.getElementById('score');
-    score.innerHTML = `Score: ${Math.floor(
+    if (score != null) score.innerHTML = `Score: ${Math.floor(
         (Date.now() - gameStartTime - pausedTime) / 1000
     )}`;
 }
 function htmlUpdateHeart() {
+    let threeheart = document.getElementById('threeheart');
+    let twoheart = document.getElementById('twoheart');
+    let oneheart = document.getElementById('oneheart');
     if (healthCount == 3) {
-        threeheart.style.visibility = 'visible';
-        twoheart.style.visibility = 'hidden';
-        oneheart.style.visibility = 'hidden';
+        if (threeheart !== null) threeheart.style.visibility = 'visible';
+        if (twoheart !== null) twoheart.style.visibility = 'hidden';
+        if (oneheart !== null) oneheart.style.visibility = 'hidden';
     } else if (healthCount == 2) {
-        threeheart.style.visibility = 'hidden';
-        twoheart.style.visibility = 'visible';
-        oneheart.style.visibility = 'hidden';
+        if (threeheart !== null) threeheart.style.visibility = 'hidden';
+        if (twoheart !== null) twoheart.style.visibility = 'visible';
+        if (oneheart !== null) oneheart.style.visibility = 'hidden';
     } else if (healthCount == 1) {
-        threeheart.style.visibility = 'hidden';
-        twoheart.style.visibility = 'hidden';
-        oneheart.style.visibility = 'visible';
+        if (threeheart !== null) threeheart.style.visibility = 'hidden';
+        if (twoheart !== null) twoheart.style.visibility = 'hidden';
+        if (oneheart !== null) oneheart.style.visibility = 'visible';
     } else {
-        threeheart.style.visibility = 'hidden';
-        twoheart.style.visibility = 'hidden';
-        oneheart.style.visibility = 'hidden';
+        if (threeheart !== null) threeheart.style.visibility = 'hidden';
+        if (twoheart !== null) twoheart.style.visibility = 'hidden';
+        if (oneheart !== null) oneheart.style.visibility = 'hidden';
     }
 }
 // setup html rendering process

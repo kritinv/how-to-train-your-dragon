@@ -43,7 +43,7 @@ class Obstacles {
         this.state = {
             movementSpeed: 1500,
             spawnInterval: 3000,
-            spawnDistance: 500,
+            spawnDistance: 1500,
             prevTime: 0,
             lastObstacleSpawnTime: 0,
 
@@ -72,7 +72,8 @@ class Obstacles {
 
     update(timeStamp: number, toothless: Toothless): void {
         let difficulty = Math.floor((Date.now()-gameStartTime-pausedTime)/5000);
-        this.state.movementSpeed = (1500 + difficulty*400);
+        this.state.movementSpeed = Math.min(5500, (1500 + difficulty*300));
+        this.state.spawnInterval = Math.max(800, (3000 - (difficulty*170)));
         const { movementSpeed, prevTime } = this.state;
         let deltaTime = timeStamp - prevTime;
         this.state.prevTime = timeStamp;

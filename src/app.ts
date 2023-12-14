@@ -127,6 +127,7 @@ export let gameStartTime: any = null;
 let gamePauseStart: any = null;
 // let elapsedTime = 0;
 export let pausedTime = 0;
+let instaDeathMode = false;
 
 // NUMBER 2: game responds to player keyboard input
 // let doublePressThreshold = 200;
@@ -229,6 +230,10 @@ document.addEventListener('keydown', function (event) {
 const onAnimationUpdateHandler = (timeStamp: number) => {
     // setTimeout(function() {}, 1000000);
     if (gameRunning) {
+        // activate instadeath mode once passing a time threshold
+        console.log((Date.now() - gameStartTime - pausedTime) / 50);
+        if (!instaDeathMode && Math.floor((Date.now() - gameStartTime - pausedTime) / 50)
+        >= 1300) {console.log('in here'); instaDeathMode = true; healthCount = 1; htmlUpdateHeart();}
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp - pausedTime);
         // game updates based on whether there was a collision
@@ -249,8 +254,8 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
                 htmlUpdateHeart();
             }
         } else if (collisionType === Collisions.Powerup) {
-            sounds['sparkle'].play();
-            if (healthCount <= 2) {
+            if (healthCount <= 2 && !instaDeathMode) {
+                sounds['sparkle'].play();
                 healthCount += 1;
                 htmlUpdateHeart();
             }
@@ -278,7 +283,8 @@ window.requestAnimationFrame(onAnimationFrameHandler);
 function htmlGameStart() {
     let startScreen = document.createElement('div');
     startScreen.id = 'startScreen';
-    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;isibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;}#oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 42.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 38.5%;}</style></head><body><div id="greywash"></div><p id="title">Fury Rush</p><p id="credits">made with love by: Mila, Bomb, Ketya, Jason</p><p id="instructions"><b>Instructions:</b> <br />use &#8594; &#8593; &#8595; &#8592; to move Toothless <br />use &#8594;&#8594; and &#8592;&#8592; to move quickly <br />use s to make Toothless do a spin move  <br />press spacebar to pause/resume</p><div id="start"><b>Press SPACEBAR to Start</b></div><div id="paused"><b>Game Paused</b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score">Score: 0</p><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
+    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;isibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover,#instadeath {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;} #instadeath {visibility: hidden} #oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 42.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 38.5%;}</style></head><body><div id="greywash"></div><p id="title">Fury Rush</p><p id="credits">made with love by: Mila, Bomb, Ketya, Jason</p><p id="instructions"><b>Instructions:</b> <br />use &#8594; &#8593; &#8595; &#8592; to move Toothless <br />use &#8594;&#8594; and &#8592;&#8592; to move quickly <br />use s to make Toothless do a spin move  <br />press spacebar to pause/resume</p><div id="start"><b>Press SPACEBAR to Start</b></div><div id="paused"><b>Game Paused</b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score">Score: 0</p><div id="instadeath"><b>Instadeath Level Reached</b></div><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
+
     document.body.appendChild(startScreen);
     let greywash = document.getElementById('greywash') || null;
     if (greywash !== null) greywash.style.visibility = 'visible';
@@ -288,6 +294,8 @@ function htmlGameStart() {
     if (paused !== null) paused.style.visibility = 'hidden';
 }
 function htmlGameRunning() {
+    let instadeath = document.getElementById('instadeath');
+    if (instadeath !== null) {if (instaDeathMode) {instadeath.style.visibility = 'visible'} else {instadeath.style.visibility = 'hidden'}}
     let greywash = document.getElementById('greywash');
     if (greywash !== null) greywash.style.visibility = 'hidden';
     let start = document.getElementById('start');
@@ -302,6 +310,8 @@ function htmlGameRunning() {
     else if (healthCount == 1) {if (oneheart !== null) oneheart.style.visibility = 'visible';}
 }
 function htmlGamePaused() {
+    let instadeath = document.getElementById('instadeath');
+    if (instadeath !== null) {instadeath.style.visibility = 'hidden'}
     let greywash = document.getElementById('greywash');
     if (greywash !== null) greywash.style.visibility = 'visible';
     let start = document.getElementById('start');
@@ -312,6 +322,8 @@ function htmlGamePaused() {
 function htmlGameOver() {
     console.log('im in here');
     console.log(`${healthCount}`);
+    let instadeath = document.getElementById('instadeath');
+    if (instadeath !== null) {instadeath.style.visibility = 'hidden'}
     let threeheart = document.getElementById('threeheart');
     let twoheart = document.getElementById('twoheart');
     let oneheart = document.getElementById('oneheart');
@@ -333,6 +345,9 @@ function htmlUpdateHeart() {
     let threeheart = document.getElementById('threeheart');
     let twoheart = document.getElementById('twoheart');
     let oneheart = document.getElementById('oneheart');
+    let instadeath = document.getElementById('instadeath');
+    if (instadeath !== null) {if (instaDeathMode) {instadeath.style.visibility = 'visible'} else {instadeath.style.visibility = 'hidden'}}
+
     if (healthCount == 3) {
         if (threeheart !== null) threeheart.style.visibility = 'visible';
         if (twoheart !== null) twoheart.style.visibility = 'hidden';

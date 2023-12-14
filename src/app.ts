@@ -126,7 +126,8 @@ let gameStartTime: any = null;
 // let gameEndTime: any = null;
 let gamePauseStart: any = null;
 // let elapsedTime = 0;
-let pausedTime = 0;
+export let pausedTime = 0;
+
 // NUMBER 2: game responds to player keyboard input
 // let doublePressThreshold = 200;
 // let keyDownTime: any = null;

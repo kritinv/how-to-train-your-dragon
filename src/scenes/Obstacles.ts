@@ -6,6 +6,7 @@ import SeedScene from './SeedScene';
 import HealthHeart from '../objects/healthheart/Healthheart';
 import FloatingRock from '../objects/FloatingRock/FloatingRock';
 import * as THREE from 'three';
+import { pausedTime } from '../app';
 
 // Define an object type which describes each object in the update list
 type movingObject = Group & {

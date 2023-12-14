@@ -194,8 +194,9 @@ document.addEventListener('keydown', function (event) {
         } else if (gameRunning) {
             gameRunning = false;
             gamePaused = true;
-            sounds['desertwind'].stop();
-            sounds['testdrive'].stop();
+            sounds['desertwind'].pause();
+            sounds['testdrive'].pause();
+            sounds['wind'].stop();
             htmlGamePaused();
             // important!!! need to keep track of time
             gamePauseStart = Date.now();

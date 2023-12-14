@@ -17,7 +17,7 @@ class Island extends Group {
         this.model = new Group();
         this.rotateY(Math.random() * 1000);
         this.scale.set(1,1,1);
-        this.boundingBox = new Box3().translate(new THREE.Vector3(0, 0, 20));
+        this.boundingBox = new Box3().translate(new THREE.Vector3(-200, -200, 20));
 
         if (Island.cachedModel) {
             this.model = Island.cachedModel.clone();

@@ -6,7 +6,7 @@ import SeedScene from './SeedScene';
 import HealthHeart from '../objects/healthheart/Healthheart';
 import FloatingRock from '../objects/FloatingRock/FloatingRock';
 import * as THREE from 'three';
-import { pausedTime } from '../app';
+import { gameStartTime, pausedTime } from '../app';
 
 // Define an object type which describes each object in the update list
 type movingObject = Group & {
@@ -41,7 +41,7 @@ class Obstacles {
     constructor(scene: SeedScene) {
         this.scene = scene;
         this.state = {
-            movementSpeed: 1000,
+            movementSpeed: 1500,
             spawnInterval: 3000,
             spawnDistance: 500,
             prevTime: 0,
@@ -71,6 +71,8 @@ class Obstacles {
     // ---------------------------------------------------- //
 
     update(timeStamp: number, toothless: Toothless): void {
+        let difficulty = Math.floor((Date.now()-gameStartTime-pausedTime)/5000);
+        this.state.movementSpeed = (1500 + difficulty*400);
         const { movementSpeed, prevTime } = this.state;
         let deltaTime = timeStamp - prevTime;
         this.state.prevTime = timeStamp;
@@ -90,11 +92,11 @@ class Obstacles {
                     this.state.lastObjectName = object.name;
                     this.state.collisionType = type;
                     collided = true;
-                    // console.log(object.name);
                 } else{
                     this.state.hasCollision = false;
                 }
-                console.log(this.state.hasCollision);
+            } else if (object.name == this.state.lastObjectName){
+                this.state.hasCollision = false;
             }
 
             // remove objects that are out of frame from scene and obstacles

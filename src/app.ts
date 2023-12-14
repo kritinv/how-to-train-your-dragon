@@ -122,7 +122,7 @@ const Collisions = {
 };
 // NUMBER 1.6: other variables for keeping track of state
 let healthCount = 3;
-let gameStartTime: any = null;
+export let gameStartTime: any = null;
 // let gameEndTime: any = null;
 let gamePauseStart: any = null;
 // let elapsedTime = 0;

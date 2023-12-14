@@ -121,7 +121,20 @@ async function example() {
         event.preventDefault();
     }
     document.addEventListener('keydown', disableKeypresses);
-    await delay(5000);
+    let standby = document.getElementById('standby');
+    if (standby !== null) {
+    await delay(100);
+    standby.innerHTML = '<b>Loading Game.</b>'
+    await delay(1000);
+    standby.innerHTML = '<b>Loading Game..</b>'
+    await delay(1000);
+    standby.innerHTML = '<b>Loading Game...</b>'
+    await delay(1000);
+    standby.innerHTML = '<b>Loading Game....</b>'
+    await delay(1000);
+    standby.innerHTML = '<b>Loading Game.....</b>'
+    await delay(1000);
+    }
     dontregisterspace = false;
     document.removeEventListener('keydown', disableKeypresses);
     htmlRemStandby();
@@ -385,7 +398,7 @@ function htmlUpdateHeart() {
 function htmlStandby() {
     let startScreen = document.createElement('div');
     startScreen.id = 'startScreen';
-    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;visibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover,#instadeath {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#standby {font-size: 2em;position: absolute;top: 50%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0,  0, 0.75);visibility: hidden}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;} #instadeath {visibility: hidden} #oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 42.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 38.5%;}</style></head><body><div id="greywash"></div><p id="title"><b></b></p><p id="credits"></p><p id="instructions"><div id="start"><b></b></div><div id="paused"><b></b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score"></p><div id="instadeath"><b>Instadeath Level Reached</b></div><div id="standby"><b>Loading Game...</b></div><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
+    startScreen.innerHTML = '<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Inline Style in Head</title><linkrel="stylesheet"href="https://fonts.googleapis.com/css2?family=Tisa+Sans:wght@400&display=swap"/><style>body {font-family: "Tisa Sans", sans-serif;font-size: 12px;}#greywash {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.65);z-index: 1;visibility: visible;}#title {font-size: 2.25em;position: absolute;left: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#credits {font-size: 1.25em;position: absolute;left: 2%;top: 9%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#instructions {font-size: 1.25em;position: absolute;left: 2%;top: 13%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start,#paused,#gameover,#instadeath {font-size: 2em;position: absolute;top: 20%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0, 0, 0.75);}#standby {font-size: 2em;position: absolute;top: 50%;left: 50%;text-align: center;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);z-index: 2;color: rgba(0, 0,  0, 0.75);visibility: hidden}#score {font-size: 2.25em;position: absolute;right: 2%;z-index: 2;color: rgba(0, 0, 0, 0.75);}#start {visibility: hidden;}#paused {visibility: visible;}#gameover {visibility: hidden;} #instadeath {visibility: hidden} #oneheart {position: absolute;bottom: 10%;left: 45.5%;}#twoheart,#threeheart {position: absolute;display: flex;}.heart {width: 60px;height: auto;margin-right: 30px;}#oneheart {visibility: hidden;bottom: 10%;left: 47.0%;}#twoheart {visibility: hidden;bottom: 10%;left: 42.5%;}#threeheart {visibility: hidden;bottom: 10%;left: 38.5%;}</style></head><body><div id="greywash"></div><p id="title"><b></b></p><p id="credits"></p><p id="instructions"><div id="start"><b></b></div><div id="paused"><b></b></div><div id="gameover"><b>Game Over</b> <br/><p style="font-size: 16px;">Press SPACEBAR to Restart</p></div><p id="score"></p><div id="instadeath"><b>Instadeath Level Reached</b></div><div id="standby"><b>Loading Game</b></div><div id="oneheart"><img class="heart" src="./heart.png" /></div><div id="twoheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div><div id="threeheart"><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /><img class="heart" src="./heart.png" /></div></body></html>';
     document.body.appendChild(startScreen);
     let standby = document.getElementById('standby');
     if (standby !== null) {standby.style.visibility = 'visible'}

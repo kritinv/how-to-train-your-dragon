@@ -123,7 +123,7 @@ async function example() {
     document.addEventListener('keydown', disableKeypresses);
     let standby = document.getElementById('standby');
     if (standby !== null) {
-    await delay(100);
+    await delay(500);
     standby.innerHTML = '<b>Loading Game.</b>'
     await delay(1000);
     standby.innerHTML = '<b>Loading Game..</b>'

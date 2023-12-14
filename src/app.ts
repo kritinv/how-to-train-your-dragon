@@ -76,6 +76,17 @@ audioLoader.load(
         punch.setVolume(1.0);
     }
 );
+// add punch sound component
+let sparkle = new THREE.Audio(listener);
+sounds['sparkle'] = sparkle;
+audioLoader.load(
+    'https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/sounds/sparkle.wav',
+    function (buffer) {
+        punch.setBuffer(buffer);
+        punch.setLoop(false);
+        punch.setVolume(1.0);
+    }
+);
 // add desertwind sound component
 let desertwind = new THREE.Audio(listener);
 sounds['desertwind'] = desertwind;
@@ -95,7 +106,7 @@ audioLoader.load(
     function (buffer) {
         testdrive.setBuffer(buffer);
         testdrive.setLoop(true);
-        testdrive.setVolume(0.5);
+        testdrive.setVolume(0.25);
     }
 );
 
@@ -227,12 +238,15 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
                 htmlGameOver();
                 gameRunning = false;
                 gameOver = true;
+                sounds['desertwind'].stop();
+                sounds['testdrive'].stop();
             } else {
                 healthCount -= 1;
                 scene.queueCollide();
                 htmlUpdateHeart();
             }
         } else if (collisionType === Collisions.Powerup) {
+            sounds['sparkle'].play();
             if (healthCount <= 2) {
                 healthCount += 1;
                 htmlUpdateHeart();
@@ -278,8 +292,8 @@ function htmlGameRunning() {
     let paused = document.getElementById('paused');
     paused.style.visibility = 'hidden';
     let threeheart = document.getElementById('threeheart');
-    let twoheart = document.getElementById('threeheart');
-    let oneheart = document.getElementById('threeheart');
+    let twoheart = document.getElementById('twoheart');
+    let oneheart = document.getElementById('oneheart');
     if (healthCount == 3) threeheart.style.visibility = 'visible';
     else if (healthCount == 2) twoheart.style.visibility = 'visible';
     else if (healthCount == 1) oneheart.style.visibility = 'visible';
@@ -337,7 +351,7 @@ async function delay(ms: any) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function example() {
-    await delay(1000);
+    await delay(4000);
     htmlGameStart();
     document.body.appendChild(canvas);
 }

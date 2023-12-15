@@ -265,7 +265,7 @@ const onAnimationUpdateHandler = (timeStamp: number) => {
     if (gameRunning) {
         // activate instadeath mode once passing a time threshold
         if (!instaDeathMode && Math.floor((Date.now() - gameStartTime - pausedTime) / 50)
-        >= 1300) {instaDeathMode = true; healthCount = 1; htmlUpdateHeart();}
+        >= 2000) {instaDeathMode = true; healthCount = 1; htmlUpdateHeart();}
         // scene.update will bring all nontoothless scene objects forwards
         scene.update && scene.update(timeStamp - pausedTime);
         // game updates based on whether there was a collision

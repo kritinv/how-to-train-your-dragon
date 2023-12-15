@@ -16,6 +16,7 @@ type movingObject = Group & {
 };
 type MovingObjectPair = [movingObject, string];
 type movingObjectClass = { new (timeStamp: number): movingObject };
+export let difficulty = 0;
 
 class Obstacles {
     scene: SeedScene;
@@ -70,8 +71,8 @@ class Obstacles {
     // ---------------------------------------------------- //
 
     update(timeStamp: number, toothless: Toothless): void {
-        let difficulty = Math.floor((Date.now()-gameStartTime-pausedTime)/5000);
-        this.state.movementSpeed = Math.min(5500, (1500 + difficulty*300));
+        difficulty = Math.floor((Date.now()-gameStartTime-pausedTime)/5000);
+        this.state.movementSpeed = Math.min(4500, (1500 + difficulty*300));
         this.state.spawnInterval = Math.max(800, (3000 - (difficulty*170)));
         const { movementSpeed, prevTime } = this.state;
         let deltaTime = timeStamp - prevTime;

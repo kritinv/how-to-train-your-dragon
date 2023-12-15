@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { difficulty } from '../../scenes/Obstacles';
 
 const cloudShader = {
     vertexShader: `
@@ -64,7 +65,7 @@ for (let i = 0; i < numClouds; i++) {
     const planeObj = new THREE.Object3D();
     planeObj.position.x = Math.random() * 4000 - 2000;
     // planeObj.position.y = -Math.random() * Math.random() * 200 - 100;
-    planeObj.position.y = -60;
+    planeObj.position.y = -100;
     planeObj.rotation.z = Math.random() * Math.PI;
     planeObj.scale.x = planeObj.scale.y =
         Math.random() * Math.random() * 3 + 0.5;
@@ -80,7 +81,7 @@ for (let i = 0; i < numClouds; i++) {
 function updateCloud() {
     // Update each cloud's position
     cloud.children.forEach((cloudMesh) => {
-        const cloudSpeed = 4;
+        const cloudSpeed = Math.min(difficulty*0.8+4, 12);
         const newPosition = cloudMesh.position.z - cloudSpeed;
         cloudMesh.position.z =
             newPosition >= 0 ? newPosition : newPosition + numClouds;

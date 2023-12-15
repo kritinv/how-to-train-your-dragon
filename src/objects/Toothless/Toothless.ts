@@ -131,9 +131,9 @@ class Toothless extends Group {
         this.blinkingState = {
             isBlinking: false,
             lastBlinkTimeStamp: 0,
-            blinkDuration: 1000, 
+            blinkDuration: 2000, 
             blinkInterval: 100, 
-            blinkOpacityLow: 0.3, 
+            blinkOpacityLow: 0.1, 
             blinkOpacityHigh: 1, 
         };
 

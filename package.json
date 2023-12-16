@@ -22,7 +22,7 @@
         "preview": "vite preview",
         "format": "prettier --write .",
         "predeploy": "npm run build",
-        "deploy": "gh-pages -d build"
+        "deploy": "gh-pages -d dist/"
     },
     "dependencies": {
         "dat.gui": "^0.7.9",

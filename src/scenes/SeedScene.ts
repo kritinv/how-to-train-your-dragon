@@ -1,10 +1,9 @@
-import { Scene, Fog} from 'three';
+import { Scene, Fog } from 'three';
 import sky from '../scenes/Sky';
 import BasicLights from '../lights/BasicLights';
 import Toothless from '../objects/Toothless/Toothless';
 import { cloud, updateCloud } from '../objects/Clouds/Clouds';
 import Obstacles from '../scenes/Obstacles';
-import * as THREE from 'three';
 
 // import * as Dat from 'dat.gui';
 // import Balloon from '../objects/Balloon/Balloon';
@@ -86,38 +85,38 @@ class SeedScene extends Scene {
 
     queueMoveLeft(sounds: any) {
         this.character.moveLeft();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueDoubleMoveLeft(sounds: any) {
         this.character.doubleMoveLeft();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueMoveRight(sounds: any) {
         this.character.moveRight();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueDoubleMoveRight(sounds: any) {
         this.character.doubleMoveRight();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueMoveUp(sounds: any) {
         this.character.moveUp();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueMoveDown(sounds: any) {
         this.character.moveDown();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueSpinMove(sounds: any) {
         this.character.spinMove();
-        sounds['wind'].stop()
-        sounds['wind'].play()
+        sounds['wind'].stop();
+        sounds['wind'].play();
     }
     queueCollide() {
         this.character.collide();

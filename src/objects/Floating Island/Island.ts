@@ -36,9 +36,9 @@ class Island extends Group {
         }
         this.boundingBox.set(this.boundingBox.min.add(new THREE.Vector3(3.5,6,10)), this.boundingBox.max.add(new THREE.Vector3(6.5,4,4).multiplyScalar(-1)));
         
-        // Collision Box Visualizer
-        const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
-        this.add( helper );
+        // // Collision Box Visualizer
+        // const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
+        // this.add( helper );
     }
     
 }

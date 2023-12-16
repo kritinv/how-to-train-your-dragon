@@ -61,9 +61,9 @@ class HealthHeart extends Group {
             });
         }
         this.boundingBox.set(this.boundingBox.min.add(new THREE.Vector3(5,3,4).multiplyScalar(-1)), this.boundingBox.max.add(new THREE.Vector3(5,3,4)));
-        // Collision Box Visualizer
-        const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
-        this.add( helper );
+        // // Collision Box Visualizer
+        // const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
+        // this.add( helper );
     }
 
     spin(): void {

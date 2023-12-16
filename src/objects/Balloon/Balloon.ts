@@ -35,9 +35,9 @@ class Balloon extends Group {
             });
         }
 
-        // Collision Box Visualizer
-        const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
-        this.add( helper );
+        // // Collision Box Visualizer
+        // const helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
+        // this.add( helper );
     }
 }
 

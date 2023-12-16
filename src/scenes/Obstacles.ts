@@ -47,7 +47,7 @@ class Obstacles {
             prevTime: 0,
             lastObstacleSpawnTime: 0,
 
-            uniqueObstacles: [Island, Balloon, Spaceship],
+            uniqueObstacles: [Island, Balloon],
             uniquePowerUps: [HealthHeart],
 
             objects: [],

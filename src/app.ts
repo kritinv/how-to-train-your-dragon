@@ -259,9 +259,11 @@ document.addEventListener('keydown', function (event) {
         }
     }
 });
+export let score = 0;
 // NUMBER 3: game updates on a regular interval
 const onAnimationUpdateHandler = (timeStamp: number) => {
     // setTimeout(function() {}, 1000000);
+    score = Math.floor((Date.now() - gameStartTime - pausedTime) / 50);
     if (gameRunning) {
         // activate instadeath mode once passing a time threshold
         if (

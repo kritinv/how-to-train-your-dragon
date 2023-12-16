@@ -5,7 +5,7 @@ import Island from '../objects/Floating Island/Island';
 import Toothless from '../objects/Toothless/Toothless';
 import SeedScene from './SeedScene';
 import HealthHeart from '../objects/healthheart/Healthheart';
-import { gameStartTime, pausedTime } from '../app';
+import { gameStartTime, pausedTime, score } from '../app';
 
 // Define an object type which describes each object in the update list
 type movingObject = Group & {
@@ -129,7 +129,7 @@ class Obstacles {
         const randomValue = Math.random();
         let object;
         let type;
-        if (randomValue < 0.9) {
+        if (randomValue < 0.9 || score > 2000) {
             object = this.getRandomObstacle();
             if (object instanceof Spaceship) {
                 object.position.x -= 6;

@@ -20,8 +20,5 @@ const htmlImport = {
 
 export default {
     base: '/how-to-train-your-dragon/',
-    build: {
-        outDir: 'dist',
-    },
     plugins: [htmlImport],
 };

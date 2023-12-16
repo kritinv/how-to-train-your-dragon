@@ -31,7 +31,6 @@ class Island extends Group {
                 Island.cachedModel = gltf.scene;
                 this.model = gltf.scene.clone();
                 this.add(this.model);
-                this.boundingBox = this.boundingBox.setFromObject(this.model);
             });
         }
         this.boundingBox.set(this.boundingBox.min.add(new THREE.Vector3(3.5,6,10)), this.boundingBox.max.add(new THREE.Vector3(6.5,4,4).multiplyScalar(-1)));

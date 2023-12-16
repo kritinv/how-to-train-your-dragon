@@ -33,7 +33,7 @@ class HealthHeart extends Group {
 
         this.name = `healthheart${timeStamp}`;
         this.model = new Group();
-        this.boundingBox = new Box3().translate(new THREE.Vector3(0, 0, 20));
+        this.boundingBox = new Box3().translate(new THREE.Vector3(-200, -200, 20));
         this.mixer = new AnimationMixer(this.model);
         this.position.setY(-3);
         // this.rotateY(Math.random() * 1000);
@@ -57,7 +57,6 @@ class HealthHeart extends Group {
                 this.model.scale.copy(
                     new Vector3(balloonScale, balloonScale, balloonScale)
                 );
-                this.boundingBox = this.boundingBox.setFromObject(this.model);
             });
         }
         this.boundingBox.set(this.boundingBox.min.add(new THREE.Vector3(5,3,4).multiplyScalar(-1)), this.boundingBox.max.add(new THREE.Vector3(5,3,4)));

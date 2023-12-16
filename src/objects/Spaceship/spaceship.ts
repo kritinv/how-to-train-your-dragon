@@ -18,7 +18,7 @@ class Spaceship extends Group {
         //this.rotateX( -8);
         this.name = `Spaceship${timeStamp}`;
         this.model = new Group();
-        this.boundingBox = new Box3().translate(new THREE.Vector3(0, 0, 20));
+        this.boundingBox = new Box3().translate(new THREE.Vector3(-200, -200, 20));
 
         if (Spaceship.cachedModel) {
             this.model = Spaceship.cachedModel.clone();
@@ -31,7 +31,6 @@ class Spaceship extends Group {
                 Spaceship.cachedModel = gltf.scene;
                 this.model = gltf.scene.clone();
                 this.add(this.model);
-                this.boundingBox = this.boundingBox.setFromObject(this.model);
             });
         }
 

@@ -131,6 +131,9 @@ class Obstacles {
         let type;
         if (randomValue < 0.9) {
             object = this.getRandomObstacle();
+            if (object instanceof Spaceship) {
+                object.position.x -= 6;
+            }
             type = 'obstacle';
         } else {
             object = this.getRandomPowerUp();

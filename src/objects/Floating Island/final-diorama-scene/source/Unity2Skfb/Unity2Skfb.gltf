@@ -83,7 +83,7 @@
   },
   "buffers": [
     {
-      "uri": "Unity2Skfb.bin",
+      "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Floating Island/final-diorama-scene/source/Unity2Skfb/Unity2Skfb.bin",
       "byteLength": 31245948
     }
   ],
@@ -115,15 +115,15 @@
   ],
   "images": [
     {
-      "uri": "4992_1001_normal.png",
+      "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Floating Island/final-diorama-scene/source/Unity2Skfb/4992_1001_normal.png",
       "name": "1001_normal"
     },
     {
-      "uri": "2828_1001_albedo.jpg",
+      "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Floating Island/final-diorama-scene/source/Unity2Skfb/2828_1001_albedo.jpg",
       "name": "1001_albedo"
     },
     {
-      "uri": "4996_1001_metallic.png",
+      "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Floating Island/final-diorama-scene/source/Unity2Skfb/4996_1001_metallic.png",
       "name": "1001_metallic"
     }
   ],

@@ -1,0 +1,331 @@
+{
+    "accessors": [
+        {
+            "bufferView": 2,
+            "componentType": 5126,
+            "count": 6352,
+            "max": [359.71307373046875, 523.2243041992188, 1949.0623779296875],
+            "min": [-363.9704284667969, -522.5632934570313, 10.004745483398438],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 76224,
+            "componentType": 5126,
+            "count": 6352,
+            "max": [1.0, 1.0, 1.0],
+            "min": [-1.0, -1.0, -1.0],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 3,
+            "componentType": 5126,
+            "count": 6352,
+            "max": [1.0, 1.0, 1.0, 1.0],
+            "min": [-1.0, -1.0, -1.0, -1.0],
+            "type": "VEC4"
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 6352,
+            "max": [0.9947958588600159, 0.9944436550140381],
+            "min": [0.0008746504900045693, 0.006746420171111822],
+            "type": "VEC2"
+        },
+        {
+            "bufferView": 0,
+            "componentType": 5125,
+            "count": 16920,
+            "type": "SCALAR"
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 152448,
+            "componentType": 5126,
+            "count": 1774,
+            "max": [785.4293212890625, 815.3975219726563, 1644.974609375],
+            "min": [
+                -1150.526123046875, -810.3941040039063, -340.88214111328125
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 173736,
+            "componentType": 5126,
+            "count": 1774,
+            "max": [0.9997462630271912, 0.998925507068634, 0.9994452595710754],
+            "min": [
+                -0.9995831847190857, -0.9984355568885803, -0.9174619317054749
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 101632,
+            "componentType": 5126,
+            "count": 1774,
+            "max": [
+                0.996303141117096, 0.9186060428619385, 0.9999004602432251, 1.0
+            ],
+            "min": [
+                -0.997218668460846, -0.9999884366989136, -0.9998450875282288,
+                -1.0
+            ],
+            "type": "VEC4"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 50816,
+            "componentType": 5126,
+            "count": 1774,
+            "max": [0.999500036239624, 0.982724666595459],
+            "min": [0.005584803409874439, 0.015753211453557014],
+            "type": "VEC2"
+        },
+        {
+            "bufferView": 0,
+            "byteOffset": 67680,
+            "componentType": 5125,
+            "count": 8724,
+            "type": "SCALAR"
+        }
+    ],
+    "asset": {
+        "extras": {
+            "author": "OscarWW (https://sketchfab.com/OscarWW)",
+            "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+            "source": "https://sketchfab.com/3d-models/to-the-moon-doge-hot-air-balloon-ef9cbcdabdd5417c8eace6f84b4d2014",
+            "title": "To The Moon Doge Hot Air Balloon"
+        },
+        "generator": "Sketchfab-12.68.0",
+        "version": "2.0"
+    },
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 102576,
+            "name": "floatBufferViews",
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteLength": 65008,
+            "byteOffset": 102576,
+            "byteStride": 8,
+            "name": "floatBufferViews",
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteLength": 195024,
+            "byteOffset": 167584,
+            "byteStride": 12,
+            "name": "floatBufferViews",
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteLength": 130016,
+            "byteOffset": 362608,
+            "byteStride": 16,
+            "name": "floatBufferViews",
+            "target": 34962
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 492624,
+            "uri": "scene.bin"
+        }
+    ],
+    "images": [
+        {
+            "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Balloon/to_the_moon_doge_hot_air_balloon/textures/basket_baseColor.png"
+        },
+        {
+            "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Balloon/to_the_moon_doge_hot_air_balloon/textures/basket_metallicRoughness.png"
+        },
+        {
+            "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Balloon/to_the_moon_doge_hot_air_balloon/textures/basket_normal.png"
+        },
+        {
+            "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Balloon/to_the_moon_doge_hot_air_balloon/textures/doge_balloon_baseColor.png"
+        },
+        {
+            "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Balloon/to_the_moon_doge_hot_air_balloon/textures/doge_balloon_metallicRoughness.png"
+        },
+        {
+            "uri": "https://raw.githubusercontent.com/kritinv/how-to-train-your-dragon/main/src/objects/Balloon/to_the_moon_doge_hot_air_balloon/textures/doge_balloon_normal.png"
+        }
+    ],
+    "materials": [
+        {
+            "doubleSided": true,
+            "name": "basket",
+            "normalTexture": {
+                "index": 2
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 0
+                },
+                "metallicRoughnessTexture": {
+                    "index": 1
+                }
+            }
+        },
+        {
+            "doubleSided": true,
+            "name": "doge_balloon",
+            "normalTexture": {
+                "index": 5
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 3
+                },
+                "metallicRoughnessTexture": {
+                    "index": 4
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "basket_basket_0",
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": 1,
+                        "POSITION": 0,
+                        "TANGENT": 2,
+                        "TEXCOORD_0": 3
+                    },
+                    "indices": 4,
+                    "material": 0,
+                    "mode": 4
+                }
+            ]
+        },
+        {
+            "name": "dogeBalloon_doge balloon_0",
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": 6,
+                        "POSITION": 5,
+                        "TANGENT": 7,
+                        "TEXCOORD_0": 8
+                    },
+                    "indices": 9,
+                    "material": 1,
+                    "mode": 4
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "children": [1],
+            "matrix": [
+                1.0, 0.0, 0.0, 0.0, 0.0, 2.220446049250313e-16, -1.0, 0.0, 0.0,
+                1.0, 2.220446049250313e-16, 0.0, 0.0, 0.0, 0.0, 1.0
+            ],
+            "name": "Sketchfab_model"
+        },
+        {
+            "children": [2],
+            "matrix": [
+                1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
+                0.0, 0.0, 0.0, 1.0
+            ],
+            "name": "1791cb01837749768e353214a7f1fd9c.fbx"
+        },
+        {
+            "children": [3, 5],
+            "name": "RootNode"
+        },
+        {
+            "children": [4],
+            "matrix": [
+                1.0923965328247863e-7, -1.387285781136364e-16,
+                -2.499111890792845, 0.0, -2.499111890792845, 0.0,
+                -1.0923965369866437e-7, 0.0, 1.387285781136364e-16,
+                2.499111890792847, -5.549143124545456e-16, 0.0,
+                -76.90266418457031, -159.3642578125, -138.86074829101563, 1.0
+            ],
+            "name": "basket"
+        },
+        {
+            "mesh": 0,
+            "name": "basket_basket_0"
+        },
+        {
+            "children": [6],
+            "matrix": [
+                3.481457679475196e-5, 1.6682610887100576e-15,
+                -10.01757335656792, 0.0, -10.01757335656792,
+                2.224348118280077e-15, -3.481457679363978e-5, 0.0,
+                5.560870295700192e-16, 10.017573356628416,
+                2.224348118280077e-15, 0.0, -96.06613159179688, 15878.640625,
+                -139.7669219970703, 1.0
+            ],
+            "name": "dogeBalloon"
+        },
+        {
+            "children": [7],
+            "matrix": [
+                1.0, 0.0, -0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, -777.5, 1.0
+            ],
+            "name": "Object_6"
+        },
+        {
+            "mesh": 1,
+            "name": "dogeBalloon_doge balloon_0"
+        }
+    ],
+    "samplers": [
+        {
+            "magFilter": 9729,
+            "minFilter": 9987,
+            "wrapS": 10497,
+            "wrapT": 10497
+        }
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Sketchfab_Scene",
+            "nodes": [0]
+        }
+    ],
+    "textures": [
+        {
+            "sampler": 0,
+            "source": 0
+        },
+        {
+            "sampler": 0,
+            "source": 1
+        },
+        {
+            "sampler": 0,
+            "source": 2
+        },
+        {
+            "sampler": 0,
+            "source": 3
+        },
+        {
+            "sampler": 0,
+            "source": 4
+        },
+        {
+            "sampler": 0,
+            "source": 5
+        }
+    ]
+}

@@ -12,7 +12,7 @@ const htmlImport = {
      */
     transform(code, id) {
         if (/^.*\.html$/g.test(id)) {
-            code = `export default \`${code}\``;
+            code = `${code}`;
         }
         return { code };
     },
